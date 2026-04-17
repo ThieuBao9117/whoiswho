@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sqlite3 /Users/thieubao/csbwhoiswho/backend/connectreward.db \".tables\")",
+      "Bash(sqlite3 /Users/thieubao/csbwhoiswho/backend/connectreward.db \"SELECT id, emp_code, full_name, user_id FROM hr_employee;\")",
+      "Bash(sqlite3 /Users/thieubao/csbwhoiswho/backend/connectreward.db \"SELECT id, new_hire_id, connector_id, status FROM crw_connections;\")",
+      "Bash(sqlite3 /Users/thieubao/csbwhoiswho/backend/connectreward.db \".schema crw_connections\")",
+      "Bash(sqlite3 /Users/thieubao/csbwhoiswho/backend/connectreward.db \".schema crw_targets\")",
+      "Bash(sqlite3 /Users/thieubao/csbwhoiswho/backend/connectreward.db \".schema crw_target\")",
+      "Bash(/Users/thieubao/csbwhoiswho/backend/venv/bin/python -c \"from app.main import app; print\\(''''import OK''''\\)\")",
+      "Bash(/usr/bin/python3 -m pip install fastapi sqlalchemy pydantic pydantic-settings python-jose passlib requests python-dotenv -q)",
+      "Bash(curl -s http://127.0.0.1:8000/)",
+      "Bash(pip3 install:*)"
+    ]
+  }
+}

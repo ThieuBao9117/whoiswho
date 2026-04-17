@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: csb-backend
+    volumes:
+      - ./backend/connectreward.db:/app/connectreward.db
+    environment:
+      - DATABASE_URL=sqlite:///./connectreward.db
+      - SECRET_KEY=csb-connection-secret-2026
+      - SYNOLOGY_WEBHOOK_URL=${SYNOLOGY_WEBHOOK_URL:-}
+    ports:
+      - "8000:8000"
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: csb-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
+
+networks:
+  default:
+    name: csb-network
