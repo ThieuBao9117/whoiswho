@@ -1,0 +1,17 @@
+Để chạy hệ thống CSB Who Is Who, bạn có thể thực hiện 1 trong 2 cách sau:
+
+Cách 1: Chạy trực tiếp bằng file thực thi
+- Chỉ cần nhấp đúp chuột (double-click) vào file `run.bat` vừa được tạo trong cùng thư mục này (`d:\WHO\csbwhoiswho\run.bat`).
+- File này sẽ tự động khởi động các dịch vụ backend, frontend và database bằng Docker.
+
+Cách 2: Chạy bằng dòng lệnh (Terminal/Command Prompt)
+1. Mở Terminal hoặc Command Prompt
+2. Di chuyển đến thư mục dự án: `cd /d D:\WHO\csbwhoiswho`
+3. Chạy lệnh: `docker-compose up -d --build`
+
+Sau khi chạy xong, bạn có thể truy cập:
+- Frontend: http://localhost:80
+- Backend API: http://localhost:8000
+
+Lưu ý: Bạn cần phải cài đặt và đang bật phần mềm Docker Desktop trên máy tính Windows của bạn trước khi chạy hệ thống.
+Dừng hệ thống: Mở terminal ở thư mục dự án và chạy `docker-compose down`.

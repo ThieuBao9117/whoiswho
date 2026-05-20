@@ -1,0 +1,357 @@
+﻿username,password,emp_code,full_name,department,role
+20090303,csb6301!,20090303,BAE BYOUNG RYOUL,EXECUTIVE,
+20090702,csb6301!,20090702,Hwang Gi-cheol,PRODUCTION,
+20100301,csb6301!,20100301,kim Soo ki,R&D,
+20140201,csb6301!,20140201,HWANG SUNG MIN,R&D,
+20160301,csb6301!,20160301,JEONG WON JU,R&D,
+20170601,csb6301!,20170601,HA SANG WOO,R&D,
+20171201,csb6301!,20171201,PARK SONG HEE,FINANCE,
+20190503,csb6301!,20190503,Ha chang whan,SALES,
+20200301,csb6301!,20200301,Kim Byeong-su,EXECUTIVE,
+20210305,csb6301!,20210305,Lee Hak-min,HR,
+20211001,csb6301!,20211001,Song Jin-seok,SALES,
+20211201,csb6301!,20211201,NOH SEUNGJING,Maintenance,
+20220101,csb6301!,20220101,Lee Jae-hyun,R&D,
+20220301,csb6301!,20220301,Cho Jun-hyung,SALES,
+20221101,csb6301!,20221101,Ha Jong-nam,SALES,
+20230501,csb6301!,20230501,Choi Jae-yeon,HR,
+20230601,csb6301!,20230601,Yoo Hyun-jung,HR,
+20230801,csb6301!,20230801,Choi Jung-ho,SALES,
+20231001,csb6301!,20231001,Dong Wa-ryong,R&D,slave
+20240101,csb6301!,20240101,Kim Chang-heon,HR,
+20250201,csb6301!,20250201,Kim Ju-young,FINANCE,
+20250202,csb6301!,20250202,Jang Da-un,PRODUCTION,
+20250203,csb6301!,20250203,Cho Young-hwan,FINANCE,
+20250301,csb6301!,20250301,Park Jin-wook,PRODUCTION,
+20250501,csb6301!,20250501,Kim Jun-hyuk,Technician & Field Engineer,
+20250701,csb6301!,20250701,Shin Yoon-hoo,Deputy POD Division Manager,
+20251001,csb6301!,20251001,Park Shin-gyu,R&D,
+20251002,csb6301!,20251002,Seo Bong-gyo,9100,
+20260201,csb6301!,20260201,Son Sung-jin,9100,
+ASSEM0001,csb6301!,V0191204,Phan Tấn Hoàng,Production,Assembly Leader
+ASSEM0002,csb6301!,V0200405,Nguyễn Hoàng Chỉnh,Production,Assembly Operator
+ASSEM0004,csb6301!,V0200804,Trần Đức Bảo,Production,Assembly Operator
+ASSEM0005,csb6301!,V0230224,Giả Văn Điệp,Production,Assembly Operator
+ASSEM0007,csb6301!,V0220831,Nguyễn Hữu Thức,Production,Assembly Operator
+ASSEM0008,csb6301!,V0250522,Phan Văn Phúc,Production,Assembly Operator
+ASSEM0010,csb6301!,V0200216,Vũ Ngọc Thìn,Production,Assembly Leader
+ASSEM0011,csb6301!,V0200402,Phạm Trung Hậu,Production,Assembly Operator
+ASSEM0012,csb6301!,V0220817,Phạm Hải Đăng,Production,Assembly Operator
+ASSEM0013,csb6301!,V0240321,Đoàn Phước Trung,Production,Assembly Operator
+ASSEM0014,csb6301!,V0220827,Nguyễn Duyên Tài,Production,Assembly Operator
+ASSEM0015,csb6301!,V0230214,Phạm Văn Tâm,Production,Assembly Operator
+ASSEM0016,csb6301!,V0241202,Phan Văn Hoàng,Production,Assembly Operator
+ASSEM0017,csb6301!,V0250602,Nguyễn Minh Anh,Production,Assembly Operator
+ASSEM0018,csb6301!,V0230908,Võ Văn Bến,Production,Assembly Operator
+ASSEM0019,csb6301!,V0250703,Nguyễn Hồng Quang,Production,Assembly Operator
+ATME001,csb6301!,V0230220,Nguyễn Văn Tiền,Production,Assembly Leader
+ATME002,csb6301!,V0210604,Trần Đăng Huy,Production,Assembly Operator
+ATME003,csb6301!,V0250212,Phạm Đức Quang,Production,Assembly Operator
+ATME005,csb6301!,V0220828,Phạm Trung Kiên,Production,Assembly Operator
+ATME010,csb6301!,V0220816,Cao Chí Tâm,Production,Assembly Operator
+COAT04,csb6301!,V0230609,Nguyễn Phúc Tiến,Production,Coating Operator
+COAT06,csb6301!,V0200212,Bùi Văn Tình,Production,Coating Leader
+COAT07,csb6301!,V0241002,Tiêu Viết Chanh,Production,Coating Operator
+COAT08,csb6301!,V0230407,Phan Bá Đông,Production,Coating Operator
+COAT09,csb6301!,V0240423,Nguyễn Đức Cường,Production,Coating Operator
+COAT10,csb6301!,V0220102,Phạm Văn Hùng,Production,Coating Operator
+COAT11,csb6301!,V0230226,Nguyễn Văn Phúc,Production,Coating Operator
+COAT12,csb6301!,V0250514,Trần Minh Kỳ,Production,Coating Operator
+COAT13,csb6301!,V0200611,Nguyễn Văn Dương,Production,Coating Leader
+COAT14,csb6301!,V0191109,Lê Xuân Hạnh,Production,Coating Operator
+COAT15,csb6301!,V0250515,Cổ Kiếm Long,Production,Coating Operator
+COAT16,csb6301!,V0190807,Nguyễn Đức Toàn,Production,Coating Operator
+COAT18,csb6301!,V0250513,Trần Hữu Cảnh,Production,Coating Operator
+COAT19,csb6301!,V0220409,Phạm Văn Thịnh,Production,Coating Operator
+COAT20,csb6301!,V0230512,Trương Văn Lượm,Production,Coating Operator
+COAT21,csb6301!,V0210307,Nguyễn Văn Chung,Production,Packing Leader
+COAT22,csb6301!,V0250216,Trần Văn Tiến Anh,Production,Coating Operator
+COAT23,csb6301!,V0250721,Nguyễn Tuấn Thành,Production,Coating Operator
+DR002,csb6301!,V0230304,Nguyễn Hoàng Tăng,Production,Drilling Leader
+DR003,csb6301!,V0240425,Đỗ Ngọc Khiêm,Production,CNC Operator
+DR004,csb6301!,V0230903,Nguyễn Viết Hiếu,Production,CNC Operator
+DR005,csb6301!,V0230216,Lê Xuân Sơn,Production,CNC Operator
+DR006,csb6301!,V0240803,Nguyễn Đức Tài,Production,CNC Operator
+DR007,csb6301!,V0230217,Phạm Văn Luận,Production,CNC Operator
+DR008,csb6301!,V0250317,Tạ Đại Hòa,Production,CNC Operator
+DR009,csb6301!,V0200616,Vũ Ngọc Bằng,Production,Drilling Leader
+DR010,csb6301!,V0210606,Phạm Văn Lý,Production,CNC Operator
+DR011,csb6301!,V0250316,Phạm Hoàng Phúc,Production,CNC Operator
+DR013,csb6301!,V0220905,Nguyễn Văn Trường,Production,Drilling Leader
+DR014,csb6301!,V0220808,Nguyễn Trung Hiếu,Production,CNC Operator
+DR015,csb6301!,V0220104,Nguyễn Hoài Danh,Production,CNC Operator
+DR016,csb6301!,V0240301,Phạm Trung Hữu,Production,CNC Operator
+DR018,csb6301!,V0230228,Nguyễn Trung Đức,Production,CNC Operator
+DR019,csb6301!,V0250306,Phạm Ngọc Vinh,Production,CNC Operator
+DR020,csb6301!,V0191207,Huỳnh Thành Thái,Production,CNC Operator
+DR021,csb6301!,V0240604,Nguyễn Tiến Trình,Production,CNC Operator
+DR023,csb6301!,V0190718,Nguyễn Quỳnh Công,Production,Drilling Leader
+DR024,csb6301!,V0230503,Nguyễn Ngọc Long,Production,Drilling Leader
+DR026,csb6301!,V0220411,Nguyễn Xuân Bách,Production,CNC Operator
+DR027,csb6301!,V0250221,Mai Kim Hưng,Production,CNC Operator
+DR028,csb6301!,V0250222,Đàm Lê Thành Lợi,Production,CNC Operator
+DR029,csb6301!,V0240419,Phạm Ngọc Chí Tường,Production,CNC Operator
+DR030,csb6301!,V0241103,Nguyễn Cao Chiến,Production,CNC Operator
+DR031,csb6301!,V0220418,Đinh Ngọc Tân,Production,CNC Operator
+DR032,csb6301!,V0250308,Nguyễn Phi Hùng,Production,CNC Operator
+DR033,csb6301!,V0240904,Huỳnh Văn Hiệp,Production,CNC Operator
+DR034,csb6301!,V0250728,Vũ Hoàng Minh,Production,CNC Operator
+DR035,csb6301!,V0250810,Ngô Minh Tuấn,Production,CNC Operator
+FI_LTTNhan,csb6301!,V0250816,Lý Thị Thanh Nhàn,Account,General Accountant
+GC002,csb6301!,V0200509,Nguyễn Anh Thạch,Production,Gear Cutting Leader
+GC003,csb6301!,V0200513,Huỳnh Hồng Nhân,Production,Gear Cutting Leader
+GC004,csb6301!,V0220216,Vũ Duy Hùng,Production,CNC Operator
+GC005,csb6301!,V0220329,Nguyễn Hữu Phước,Production,CNC Operator
+GC006,csb6301!,V0210322,Nguyễn Văn Hưng,Production,CNC Operator
+GC007,csb6301!,V0240808,Trần Lê Hoài,Production,CNC Operator
+GC008,csb6301!,V0250508,Trần Huỳnh Chiêu,Production,CNC Operator
+GC009,csb6301!,V0250729,Trần Thành Trung,Production,CNC Operator
+GC010,csb6301!,V0211023,Võ Minh Đức,Production,CNC Operator
+GC011,csb6301!,V0220311,Phạm Văn Quyền,Production,CNC Operator
+GC012,csb6301!,V0240407,Đặng Phương Phú Tài,Production,CNC Operator
+hr_dtnquy,csb6301!,V0260102,Dương Thị Ngọc Quý,HR,Division Manager
+hr_lthhong,csb6301!,V0190602,Lê Thị Hoàng Hồng,HR,Resource Division Manager
+HRM_BNDuyen,csb6301!,V0251015,Bùi Ngọc Duyên,HR,English teacher
+HRM_LNTrung,csb6301!,V0250817,Lê Nhật Trung,HR,HR Part Leader
+HRM_PTTDung,csb6301!,V0251016,Phan Thị Thùy Dung,HR,General Affair
+IH0001,csb6301!,V0210304,Đào Đức Hoàng,Production,Induction Leader
+IH0002,csb6301!,V0211219,Nguyễn Thành Long,Production,Induction Leader
+IH0003,csb6301!,V0220106,Hồ Dự Tiên Thiện,Production,Induction Leader
+IH0004,csb6301!,V0200913,Nguyễn Thái Học,Production,Induction Leader
+IH0005,csb6301!,V0231001,Phạm Văn Đạt,Production,CNC Operator
+IH0008,csb6301!,V0250511,Nguyễn Nhật Tâm,Production,CNC Operator
+IH0009,csb6301!,V0250517,Lê Văn Dăng,Production,CNC Operator
+IH0010,csb6301!,V0250520,Nguyễn Xuân Phong,Production,CNC Operator
+IH0011,csb6301!,V0250218,Ngô Nhật Phú,Production,CNC Operator
+IH0012,csb6301!,V0220901,Võ Việt Tiến,Production,CNC Operator
+IH0014,csb6301!,V0250502,Đoàn Thái Thuận,Production,CNC Operator
+IH0018,csb6301!,V0240814,Phạm Hùng Mạnh Kim,Production,CNC Operator
+IH0019,csb6301!,V0191104,Trần Minh Tính,Production,CNC Operator
+IH0020,csb6301!,V0250606,Lương Nguyễn Trường Thịnh,Production,CNC Operator
+MI_02,csb6301!,V0250214,Trần Minh Trí,MI,IT Staff
+mi_03,csb6301!,V0251011,Phan Văn Thành,MI,IT Staff
+MI_PVThanh,csb6301!,V0230511,Phan Văn Thành,Production,CNC Operator
+MNT_CQMinh,csb6301!,V0220214,Cao Quang Minh,Maintenance,Maintenance Leader
+MNT_DBCuong,csb6301!,V0251107,Đinh Bá Cường,Maintenance,Maintenance Operator
+MNT_DQDung,csb6301!,V0250106,Dương Quang Dũng,Maintenance,Maintenance Operator
+MNT_HVBang,csb6301!,V0240508,Hoàng Văn Bằng,Maintenance,Maintenance Operator
+MNT_NDPhon,csb6301!,V0191209,Nguyễn Đức Phôn,Maintenance,Maintenance Leader
+MNT_NHQTrung,csb6301!,V0240912,Nguyễn Hoàng Quốc Trung,Maintenance,Maintenance Operator
+MNT_NMDuc,csb6301!,V0250215,Nguyễn Minh Đức,Maintenance,Maintenance Operator
+MNT_NMHung,csb6301!,V0251005,Nguyễn Mạnh Hùng,Maintenance,Maintenance Operator
+MNT_PTANH,csb6301!,V0260103,Phan Tuấn Anh,Maintenance,
+MNT_TMThai,csb6301!,V0251004,Trần Minh Thái,Maintenance,Maintenance Operator
+MNT_VMToan,csb6301!,V0220718,Vũ Minh Toàn,Maintenance,Maintenance Operator
+mnt_vnkhoa,csb6301!,V0251106,Vũ Nguyên Khoa,Maintenance,Maintenance Engineer
+MNT_VNToan,csb6301!,V0230510,Vũ Nguyên Toàn,Maintenance,Maintenance Operator
+MNT_VTTGiang,csb6301!,V0251205,Vi Thị Thùy Giang,Production,Production officer
+PACK02,csb6301!,V0220707,Trần Quang Khoa,Production,Packing Operator
+PACK03,csb6301!,V0220844,Nguyễn Bảo Trung,Production,Packing Operator
+PACK04,csb6301!,V0210516,Nguyễn Văn Hải,Production,Packing Operator
+PACK05,csb6301!,V0240320,Phan Văn Tình,Production,Packing Operator
+PACK06,csb6301!,V0250206,Phạm Chí Khang,Production,Packing Operator
+PACK07,csb6301!,V0220923,Đỗ Công Tuyên,Production,Packing Operator
+PACK08,csb6301!,V0240304,Huỳnh Trung Hiếu,Production,Packing Operator
+PM_Rob,csb6301!,20160401,WOO SEUNG HEUI,SALES,
+PM_Uyen,csb6301!,V0251204,Nguyễn Tú Uyên,PM,PM Staff
+PRD_BAEK,csb6301!,20090505,BAEK JOON OH,PSD Disvion Manager,
+PRD_dlmtuan,csb6301!,V0251201,Đào Lê Minh Tuấn,Production,Production officer
+prd_hmthien,csb6301!,V0190707,Hoàng Minh Thiện,Production,Production Manager
+PRD_lttnam,csb6301!,V0250907,Lê Trọng Tiến Nam,Production,Production Engineer
+PRD_ptquang,csb6301!,V0190705,Phan Thanh Quang,Production,Production Part Leader
+PRD_PTTung,csb6301!,V0260101,Phan Thanh Tùng,Production,Field Engineer
+PRD_ytduong,csb6301!,V0240701,Y Thái Dương,Production,Production Engineer
+PRD21,csb6301!,V0250807,Phạm Phong Phú,Production,Production Engineer
+PRD23,csb6301!,V0200230,Trần Văn Thông,Production,Field Engineer
+PRD24,csb6301!,V0210527,Nguyễn Thanh Tuấn,Production,Field Engineer
+PSD,csb6301!,20130401,LEE SANG BONG,FINANCE,
+QA_lgquynh,csb6301!,V0251001,Lâm Gia Quỳnh,Q.A,Q.A Engineer
+qa_nhhoang,csb6301!,V0251012,Nguyễn Huy Hoàng,Q.A,Q.A Engineer
+qa_vdnam,csb6301!,V0190708,Vũ Đình Nam,Q.A,Q.A Division Manager
+QC_lhdieu,csb6301!,V0200606,Lê Hữu Diệu,Q.A,Inspector Leader
+QC006,csb6301!,V0230310,Đặng Văn Tiến,Q.A,Inspector
+QC007,csb6301!,V0220323,Nguyễn Thành,Q.A,Inspector
+QC009,csb6301!,V0240402,Trịnh Minh Ban,Q.A,Inspector
+QC010,csb6301!,V0230409,Đường Hớn Tường,Q.A,Inspector
+QC011,csb6301!,V0240705,Nguyễn Văn Thông,Q.A,Inspector
+QC012,csb6301!,V0241109,Nguyễn Tấn Phú,Q.A,Inspector
+QC015,csb6301!,V0230101,Phạm Nhật Trường,Q.A,Inspector
+QC016,csb6301!,V0250709,Nguyễn Long Vũ,Q.A,Inspector
+QC017,csb6301!,V0250711,Sú Ngọc Hưng,Q.A,Inspector
+QC025,csb6301!,V0240403,Hồ Quang Viên,Q.A,Inspector
+QC026,csb6301!,V0241003,Phạm Hoàng Đăng,Q.A,Inspector
+QC027,csb6301!,V0250203,Nguyễn Văn Trinh,Q.A,Inspector
+QC028,csb6301!,V0250615,Võ Thanh Bình,Q.A,Inspector
+QC029,csb6301!,V0241009,Hoàng Ngọc Linh,Q.A,Inspector
+QC031,csb6301!,V0250804,Nguyễn Thiên Vương,Q.A,Inspector
+QC034,csb6301!,V0230212,Nguyễn Đình Vỏ,Q.A,Inspector
+QC035,csb6301!,V0240307,Trần Hoài Vũ,Q.A,Inspector
+QC036,csb6301!,V0240319,Cao Việt Anh,Q.A,Inspector
+QC037,csb6301!,V0251003,Nguyễn Đức Thiên,Q.A,Inspector
+QC038,csb6301!,V0251002,Trần Đình Trí,Q.A,Inspector
+QC039,csb6301!,V0250911,Trần Nhật Tân,Q.A,Inspector
+QC041,csb6301!,V0251103,Lê Quang Trung,Q.A,Inspector
+QC042,csb6301!,V0251206,Nguyễn Quốc Trường,Q.A,Inspector
+QC044,csb6301!,V0251211,Bùi Hoàng Phi,Q.A,Inspector
+THYUN,csb6301!,20090104,YUN TAE HONG,PRODUCTION,
+TURN_NQChung,csb6301!,V0201201,Nguyễn Quốc Chung,Production,Turning Leader
+TURN0001,csb6301!,V0190715,Đặng Quốc Trầm,Production,Turning Leader
+TURN0002,csb6301!,V0200808,Lê Minh Tiến,Production,Turning Leader
+TURN0003,csb6301!,V0220406,Trịnh Công Đỉnh,Production,Turning Leader
+TURN0005,csb6301!,V0250305,Nguyễn Trung Hoàng,Production,CNC Operator
+TURN0006,csb6301!,V0220913,Nguyễn Hoàng Linh,Production,CNC Operator
+TURN0007,csb6301!,V0230904,Lo Vinh Phúc,Production,CNC Operator
+TURN0008,csb6301!,V0230307,Thân Đào Duy Khôi,Production,CNC Operator
+TURN0009,csb6301!,V0240420,Phạm Đức Tú,Production,CNC Operator
+TURN0010,csb6301!,V0220511,Vũ Thành Long,Production,CNC Operator
+TURN0011,csb6301!,V0220227,Nguyễn Văn Viết,Production,CNC Operator
+TURN0013,csb6301!,V0220909,Trần Bá Tồng,Production,CNC Operator
+TURN0014,csb6301!,V0220205,Huỳnh Thanh Tùng,Production,CNC Operator
+TURN0015,csb6301!,V0220917,Nguyễn Văn Thành Sang,Production,CNC Operator
+TURN0016,csb6301!,V0211022,Chung Nguyên Bá,Production,CNC Operator
+TURN0018,csb6301!,V0250312,Vũ Ngọc Huy,Production,CNC Operator
+TURN0019,csb6301!,V0240601,Ngô Phạm Công Thành,Production,CNC Operator
+TURN0021,csb6301!,V0230107,Nguyễn Đình Bách,Production,Turning Leader
+TURN0022,csb6301!,V0220226,Trần Văn Thái,Production,Turning Leader
+TURN0023,csb6301!,V0220712,Nguyễn Phan Hải,Production,CNC Operator
+TURN0025,csb6301!,V0240610,Trần Thanh An,Production,CNC Operator
+TURN0026,csb6301!,V0240414,Lê Văn Thịnh,Production,CNC Operator
+TURN0027,csb6301!,V0220918,Lê Duy Tân,Production,CNC Operator
+TURN0028,csb6301!,V0211020,Trần Nguyễn Minh Nhật,Production,CNC Operator
+TURN0030,csb6301!,V0241012,Lê Hồng Danh,Production,CNC Operator
+TURN0034,csb6301!,V0220316,Tạ Trung Kiên,Production,CNC Operator
+TURN0035,csb6301!,V0250715,A Kiệt,Production,CNC Operator
+TURN0036,csb6301!,V0230504,Trần Hữu Thuận,Production,CNC Operator
+TURN0038,csb6301!,V0230603,A Bus,Production,CNC Operator
+TURN0040,csb6301!,V0220207,Phạm Đức Anh,Production,Turning Leader
+TURN0042,csb6301!,V0240504,Trần Văn Tinh,Production,CNC Operator
+TURN0043,csb6301!,V0220908,Nguyễn Vũ Tính,Production,CNC Operator
+TURN0044,csb6301!,V0211206,Nguyễn Ngọc Lương,Production,CNC Operator
+TURN0045,csb6301!,V0230315,Trần Văn Tưởng,Production,CNC Operator
+TURN0046,csb6301!,V0210409,Mai Thành Đồng,Production,CNC Operator
+TURN0047,csb6301!,V0240611,Trần Hòa Đồng,Production,CNC Operator
+TURN0048,csb6301!,V0250706,Nguyễn Chí Hải,Production,CNC Operator
+TURN0049,csb6301!,V0211115,Nguyễn Trọng Tấn,Production,CNC Operator
+TURN0050,csb6301!,V0200211,Nguyễn Ngọc Hiệp,Production,CNC Operator
+TURN0051,csb6301!,V0241107,Bùi Văn Đức,Production,CNC Operator
+TURN0052,csb6301!,V0240907,Trần Văn Tin,Production,CNC Operator
+TURN0053,csb6301!,V0210503,Trần Minh Tấn,Production,CNC Operator
+TURN0054,csb6301!,V0220911,Nguyễn Quốc Tuấn,Production,CNC Operator
+TURN0055,csb6301!,V0220912,Vũ Nguyễn Tấn,Production,CNC Operator
+TURN0056,csb6301!,V0250220,Nguyễn Tấn Lực,Production,CNC Operator
+TURN0057,csb6301!,V0240706,Phan Thế Bảo,Production,CNC Operator
+TURN0058,csb6301!,V0250311,Nguyễn Minh Tiến,Production,CNC Operator
+TURN0059,csb6301!,V0220327,Nguyễn Đức Kỳ,Production,CNC Operator
+TURN0060,csb6301!,V0250727,Nguyễn Trương Văn Nhân,Production,CNC Operator
+TURN0061,csb6301!,V0240317,Huỳnh Minh Hùng,Production,CNC Operator
+TURN0063,csb6301!,V0250613,Hoàng Thịnh Nhật,Production,CNC Operator
+V0190702,csb6301!,V0190702,Vũ Minh Hiền,HR,EHS Specialist
+V0190713,csb6301!,V0190713,Nguyễn Viết Cương,Maintenance,Maintenance Engineer
+V0190717,csb6301!,V0190717,Trần Văn Hải,Q.A,Q.A Engineer
+V0191010,csb6301!,V0191010,Phạm Văn Liệu,Q.A,Field Engineer
+V0191107,csb6301!,V0191107,Phan Thanh Hưng,Production,Field Engineer
+V0191114,csb6301!,V0191114,Trần Huy Bình,HR,Driver
+V0200401,csb6301!,V0200401,Trịnh Thị Trinh,HR,Nurse
+V0200501,csb6301!,V0200501,Đỗ Gia Huy,Production,Gear Cutting Leader
+V0200515,csb6301!,V0200515,Võ Công Bằng,Production,CNC Operator
+V0200603,csb6301!,V0200603,Dương Anh Trung,Production,Field Engineer
+V0200608,csb6301!,V0200608,Nguyễn Đình Lâm,Maintenance,Maintenance Engineer
+V0201101,csb6301!,V0201101,Hồ Nguyễn Thị Kim Cúc,HR,HR Staff
+V0210303,csb6301!,V0210303,Ngô Phạm Tuấn Thịnh,Production,Field Engineer
+V0210313,csb6301!,V0210313,Nguyễn Tiến Đạt,Q.A,Q.A Engineer
+V0210331,csb6301!,V0210331,Vũ Đức Thành,Production,Assembly Leader
+V0210403,csb6301!,V0210403,Nguyễn Khắc Nhật,Production,Turning Leader
+V0210406,csb6301!,V0210406,Trần Tiểu Bình,Production,Field Engineer
+V0210701,csb6301!,V0210701,Nguyễn Đình Nghĩa,Q.A,Inspector
+V0211111,csb6301!,V0211111,Trần Quốc Toản,Production,CNC Operator
+V0211216,csb6301!,V0211216,Nguyễn Ngọc Thạch,Production,Assembly Operator
+V0220212,csb6301!,V0220212,Nguyễn Tấn Tài,PM,PM Specialist
+V0220223,csb6301!,V0220223,Nguyễn Xuân Năm,Production,Assembly Operator
+V0220330,csb6301!,V0220330,Nguyễn Văn Chung,Production,Coating Operator
+V0220403,csb6301!,V0220403,Phạm Văn Dương,Q.A,Inspector
+V0220606,csb6301!,V0220606,Trần Giang Trường,Production,Coating Leader
+V0220715,csb6301!,V0220715,Phạm Quang Vinh,HR,Driver
+V0220721,csb6301!,V0220721,Nguyễn Ngọc Hoàng,Q.A,Inspector Leader
+V0220726,csb6301!,V0220726,Nguyễn Văn Chí Thanh,Production,Coating Operator
+V0220802,csb6301!,V0220802,Phạm Hoàng Vỹ,Q.A,Q.A Part Leader
+V0220804,csb6301!,V0220804,Trần Thiện Thư,PM,PM Staff
+V0220847,csb6301!,V0220847,Võ Quế Lai,Production,Assembly Operator
+V0220922,csb6301!,V0220922,Nguyễn Thanh Hải,Production,Assembly Operator
+V0221001,csb6301!,V0221001,Đỗ Văn Quỳnh,HR,Driver
+V0221101,csb6301!,V0221101,Phan Văn Thưởng,Production,Production Translator
+V0230209,csb6301!,V0230209,Trần Văn Long,HR,Driver
+V0230213,csb6301!,V0230213,Võ Thế Trí,Q.A,Inspector Leader
+V0230222,csb6301!,V0230222,Vũ Toàn Thắng,Production,Assembly Operator
+V0230235,csb6301!,V0230235,Phạm Hoàng Tiến,Q.A,Inspector
+V0230237,csb6301!,V0230237,Huỳnh Giang Thanh,Production,Production Staff
+V0230301,csb6301!,V0230301,Lê Vĩnh Hảo,PM,PM Staff
+V0230509,csb6301!,V0230509,Nguyễn Phạm Đăng Quang,Production,Production Part Leader
+V0230803,csb6301!,V0230803,Trần Thế Thông,Production,Production Engineer
+V0240201,csb6301!,V0240201,Nguyễn Phan Trúc Vy,Production,Production Staff
+V0240310,csb6301!,V0240310,Vũ Văn Lượng,SCM,Forklift Operator
+V0240312,csb6301!,V0240312,Phạm Văn Tâm,Production,CNC Operator
+V0240413,csb6301!,V0240413,Bùi Văn Cường,SCM,Forklift Operator
+V0240607,csb6301!,V0240607,Nguyễn Thị Như Hảo,Account,Accountant Staff
+V0240702,csb6301!,V0240702,Nguyễn Trọng Tâm,Production,Production Engineer
+V0240802,csb6301!,V0240802,Nguyễn Thành Đạt,Production,CNC Operator
+V0240806,csb6301!,V0240806,Phạm Thị Bích Thủy,Account,Accountant Staff
+V0240901,csb6301!,V0240901,Nguyễn Đức Huy,Production,Production Engineer
+V0240905,csb6301!,V0240905,Điểu Thái,Production,CNC Operator
+V0241106,csb6301!,V0241106,Văn Đình Guyn,Production,Coating Operator
+V0241117,csb6301!,V0241117,Nguyễn Đức Minh Thành,Q.A,Q.A Engineer
+V0250104,csb6301!,V0250104,Đinh Ngọc Vương,Q.A,Inspector
+V0250210,csb6301!,V0250210,Cao Văn Bảo,SCM,Forklift Operator
+V0250213,csb6301!,V0250213,Tạ Thị Thanh Hương,Account,Accountant Staff
+V0250307,csb6301!,V0250307,Từ Kim Danh,Production,CNC Operator
+V0250403,csb6301!,V0250403,Trần Đức Tuấn,MI,MI Engineer
+V0250412,csb6301!,V0250412,Ngô Đức Tấn,SCM,SCM Staff
+V0250503,csb6301!,V0250503,Nguyễn Võ Khánh Đoan,SCM,SCM Staff
+V0250504,csb6301!,V0250504,Võ Thị Hồng Phúc,HR,HR Staff
+V0250510,csb6301!,V0250510,Trương Hoàng Tuấn,Production,CNC Operator
+V0250512,csb6301!,V0250512,Trần Minh Hoàng,Q.A,Q.A Engineer
+V0250523,csb6301!,V0250523,Trần Công Hậu,Q.A,Q.A Engineer
+V0250609,csb6301!,V0250609,Mai Văn Nhật,Production,CNC Operator
+V0250610,csb6301!,V0250610,Nguyễn Quốc Hưng,Production,CNC Operator
+V0250611,csb6301!,V0250611,Trương Minh Dũng,HR,Driver
+V0250616,csb6301!,V0250616,Phan Tuyết Hạnh,SCM,Inventory Staff
+V0250701,csb6301!,V0250701,Nguyễn Ngọc Chiến,Production,Coating Operator
+V0250702,csb6301!,V0250702,Vũ Văn Tú,Production,Assembly Operator
+V0250712,csb6301!,V0250712,Nguyễn Mạnh Huỳnh,Q.A,Inspector
+V0250719,csb6301!,V0250719,Nguyễn Thành Nhân,Q.A,Inspector
+V0250724,csb6301!,V0250724,Mai Hữu Nghĩa,Production,CNC Operator
+V0250802,csb6301!,V0250802,Nguyễn Hoàng Phúc,Q.A,Inspector
+V0250803,csb6301!,V0250803,Nguyễn Thượng Kiên,Q.A,Inspector
+V0250811,csb6301!,V0250811,Trần Thị Nga,Account,Chief Account
+V0250815,csb6301!,V0250815,Phạm Phước Thành,SCM,SCM Staff
+V0250818,csb6301!,V0250818,Kho Linur Dine,SCM,Inventory Staff
+V0250903,csb6301!,V0250903,Phạm Quốc Dũng,Production,Assembly Operator
+V0250904,csb6301!,V0250904,Nguyễn Anh Quân,Production,Assembly Operator
+V0250910,csb6301!,V0250910,Nguyễn Hoàng Anh Thọ,Production,Coating Operator
+V0250912,csb6301!,V0250912,Nguyễn Quốc Toàn,Production,CNC Operator
+V0250913,csb6301!,V0250913,Nguyễn Phi Hùng,Production,Assembly Operator
+V0251006,csb6301!,V0251006,Nguyễn Hoàng Thiên,Production,Assembly Operator
+V0251007,csb6301!,V0251007,Huỳnh Hà Giang,Production,Assembly Operator
+V0251008,csb6301!,V0251008,Phạm Hồng Thanh,Production,CNC Operator
+V0251010,csb6301!,V0251010,Trương Văn Thắng,Production,Coating Operator
+V0251013,csb6301!,V0251013,Võ Minh Nhựt,Production,CNC Operator
+V0251014,csb6301!,V0251014,Phạm Văn Hoàng,Production,CNC Operator
+V0251018,csb6301!,V0251018,Nguyễn Phạm Minh Khôi,Production,CNC Operator
+V0251019,csb6301!,V0251019,Nguyễn Tấn Hạnh,SCM,Warehouse Operator
+V0251104,csb6301!,V0251104,Phạm Hàn Quốc,Production,CNC Operator
+V0251108,csb6301!,V0251108,Phạm Minh Phát,Production,CNC Operator
+V0251109,csb6301!,V0251109,Nguyễn Nhất Đạt,Production,CNC Operator
+V0251110,csb6301!,V0251110,Hồ Quang Trung,Production,CNC Operator
+V0251111,csb6301!,V0251111,Hà Ngọc Thiên Long,Production,CNC Operator
+V0251112,csb6301!,V0251112,Nguyễn Minh Hường,Production,POD Division Manager
+V0251113,csb6301!,V0251113,Phùng Tiến Đạt,Production,CNC Operator
+V0251114,csb6301!,V0251114,Đoàn Minh Trí,Production,CNC Operator
+V0251115,csb6301!,V0251115,Vũ Minh Trường,Production,Assembly Operator
+V0251116,csb6301!,V0251116,Nguyễn Trọng Phúc,Production,Assembly Operator
+V0251202,csb6301!,V0251202,Trần Văn Đại,Production,Assembly Operator
+V0251207,csb6301!,V0251207,Đào Gia Bảo,Production,CNC Operator
+V0251208,csb6301!,V0251208,Nguyễn Lê Trọng Duy,Production,CNC Operator
+V0251209,csb6301!,V0251209,Trần Hải Hoàng,Production,Assembly Operator
+V0251213,csb6301!,V0251213,Đặng Anh Hào,Production,CNC Operator
+V0251214,csb6301!,V0251214,Lê Quang Hào,Production,CNC Operator
+WH_DDHAU,csb6301!,V0251215,Đặng Duy Hải Âu,SCM,Warehouse Leader
+WH_TVNGHIA,csb6301!,V0220701,Trần Văn Nghĩa,SCM,Warehouse Operator

@@ -1,0 +1,80 @@
+version: '3.8'
+
+# ============================================================
+# CSB Connection - Independent Database Architecture
+#
+# HRM DB: Separate PostgreSQL managed by Django (not in this file)
+# CSB DB: PostgreSQL managed by CSB (Alembic migrations)
+# ============================================================
+
+services:
+  # ============================================================
+  # CSB Database (PostgreSQL) - Independent from HRM
+  # Migrations managed by Alembic
+  # ============================================================
+  csb_db:
+    image: postgres:15-alpine
+    container_name: csb-db
+    environment:
+      POSTGRES_DB: csb_db
+      POSTGRES_USER: csb_user
+      POSTGRES_PASSWORD: csb_password_dev
+    ports:
+      - "5433:5432"
+    volumes:
+      - csb_data:/var/lib/postgresql/data
+    networks:
+      - csb-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U csb_user -d csb_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  # ============================================================
+  # CSB Backend (FastAPI)
+  # ============================================================
+  backend:
+    build: ./backend
+    container_name: csb-backend
+    volumes:
+      - ./backend:/app
+    environment:
+      # CSB uses its OWN database - NO connection to HRM DB
+      DATABASE_URL: postgresql://csb_user:csb_password_dev@csb_db:5432/csb_db
+      # Shared secret key for JWT - MUST match HRM Django settings
+      SECRET_KEY: csb-connection-secret-2026
+      SYNOLOGY_WEBHOOK_URL: ${SYNOLOGY_WEBHOOK_URL:-}
+    ports:
+      - "8000:8000"
+    depends_on:
+      csb_db:
+        condition: service_healthy
+    restart: always
+    networks:
+      - csb-network
+
+  # ============================================================
+  # CSB Frontend
+  # ============================================================
+  frontend:
+    build: ./frontend
+    container_name: csb-frontend
+    ports:
+      - "80:80"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - csb-network
+
+volumes:
+  csb_data:
+    driver: local
+
+networks:
+  csb-network:
+    driver: bridge
