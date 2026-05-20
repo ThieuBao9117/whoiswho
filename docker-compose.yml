@@ -44,10 +44,10 @@ services:
       # CSB uses its OWN database - NO connection to HRM DB
       DATABASE_URL: postgresql://csb_user:csb_password_dev@csb_db:5432/csb_db
       # Shared secret key for JWT - MUST match HRM Django settings
-      SECRET_KEY: csb-connection-secret-2026
+      SECRET_KEY: 09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7
       SYNOLOGY_WEBHOOK_URL: ${SYNOLOGY_WEBHOOK_URL:-}
     ports:
-      - "8000:8000"
+      - "7000:8000"
     depends_on:
       csb_db:
         condition: service_healthy
@@ -64,7 +64,7 @@ services:
     ports:
       - "80:80"
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8000
+      VITE_API_URL: http://localhost:7000/api
     depends_on:
       - backend
     restart: always
