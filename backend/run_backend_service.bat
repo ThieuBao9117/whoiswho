@@ -1,9 +1,5 @@
 @echo off
-REM Script to keep uvicorn backend running persistently
-REM Run this once from cmd.exe as Administrator or via Task Scheduler
-REM It will automatically restart if uvicorn crashes
-
-title CSB WHO Backend
+title CSB WHO Backend - Port 7000
 
 :CHECK_PORT
 netstat -ano | findstr ":7000 " | findstr "LISTENING" >nul 2>&1
@@ -18,8 +14,14 @@ if errorlevel 1 (
 
 :START
 cd /d C:\WHO\csbwhoiswho\backend
-echo [%DATE% %TIME%] Starting uvicorn on port 7000...
-C:\WHO\csbwhoiswho\backend\venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 7000 --log-level info
-echo [%DATE% %TIME%] Backend stopped (exit code %ERRORLEVEL%), restarting in 3s...
+echo [%DATE% %TIME%] Starting uvicorn...
+C:\WHO\csbwhoiswho\backend\venv\Scripts\python.exe -m uvicorn app.main:app ^
+    --host 127.0.0.1 ^
+    --port 7000 ^
+    --loop asyncio ^
+    --http h11 ^
+    --timeout-keep-alive 5 ^
+    --log-level info
+echo [%DATE% %TIME%] Backend stopped (exit %ERRORLEVEL%), restarting in 3s...
 timeout /t 3 /nobreak >nul
 goto START

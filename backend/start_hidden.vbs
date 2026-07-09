@@ -1,2 +1,2 @@
 Set WshShell = CreateObject("WScript.Shell")
-WshShell.Run "cmd.exe /c C:\WHO\csbwhoiswho\backend\run_backend_service.bat", 0, False
+WshShell.Run "C:\WHO\csbwhoiswho\backend\venv\Scripts\python.exe C:\WHO\csbwhoiswho\backend\keep_alive.py", 0, False
