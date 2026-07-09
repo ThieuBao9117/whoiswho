@@ -1,4 +1,4 @@
-"""Alembic environment configuration for CSB Connection database.
+"""Alembic environment configuration for WHO Is WHO database.
 
 This manages migrations for CSB tables ONLY.
 HRM tables (auth_user, hr_employee) are managed by Django migrations.

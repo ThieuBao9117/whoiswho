@@ -40,9 +40,9 @@ def send_invite(
             raise HTTPException(status_code=403, detail="Your mission has expired!")
 
     # Check if connector exists
-    from sqlalchemy import func
+    from sqlalchemy import func, cast, String
     connector = db.query(CSBEmployeeRef).filter(
-        (CSBEmployeeRef.id == connector_id) | 
+        (cast(CSBEmployeeRef.id, String) == str(connector_id)) | 
         (func.lower(CSBEmployeeRef.emp_code) == func.lower(str(connector_id))) |
         (func.lower(CSBEmployeeRef.username) == func.lower(str(connector_id)))
     ).first()
@@ -203,7 +203,7 @@ def received_connections(
 
 @router.put("/{conn_id}")
 def update_invite_status(
-    conn_id: int,
+    conn_id: str,
     background_tasks: BackgroundTasks,
     accept: bool = Query(True),
     current_user: CSBEmployeeRef = Depends(get_current_user),
@@ -296,7 +296,7 @@ def all_connections(
                 "id": connector.id if connector else None,
                 "full_name": connector.full_name if connector else "Unknown",
                 "emp_code": connector.emp_code if connector else "Unknown",
-                "department": connector.department if connector else None,
+                "department": (connector.part or connector.department) if connector else None,
                 "role": connector.role if connector else None,
                 "photo": connector.photo if connector else None,
             }
@@ -322,7 +322,7 @@ def all_connections(
                 "id": new_hire.id if new_hire else None,
                 "full_name": new_hire.full_name if new_hire else "Unknown",
                 "emp_code": new_hire.emp_code if new_hire else "Unknown",
-                "department": new_hire.department if new_hire else None,
+                "department": (new_hire.part or new_hire.department) if new_hire else None,
                 "role": new_hire.role if new_hire else None,
                 "photo": new_hire.photo if new_hire else None,
             }

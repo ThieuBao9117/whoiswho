@@ -54,7 +54,7 @@ def init_db():
         pl_required INTEGER DEFAULT 1,
         tm_required INTEGER DEFAULT 1,
         gd_required INTEGER DEFAULT 0,
-        reward_amount FLOAT DEFAULT 500000.0,
+        reward_amount FLOAT DEFAULT 200000.0,
         is_active BOOLEAN DEFAULT 1,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )

@@ -1,5 +1,5 @@
 """
-Database Configuration - CSB Connection (SQLite for Development)
+Database Configuration - WHO Is WHO (SQLite for Development)
 
 CSB has its OWN database, separate from HRM.
 - Uses SQLite for easy development (no PostgreSQL required)

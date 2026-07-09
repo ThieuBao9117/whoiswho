@@ -11,7 +11,7 @@ SECRET_KEY = "csb-connection-secret-2026"
 ALGORITHM = "HS256"
 
 print("=" * 50)
-print("CSB Connection - Demo User Test")
+print("WHO Is WHO - Demo User Test")
 print("=" * 50)
 
 # 1. Test DB connection

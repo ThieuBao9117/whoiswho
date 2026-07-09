@@ -1,7 +1,7 @@
 version: '3.8'
 
 # ============================================================
-# CSB Connection - Independent Database Architecture
+# WHO Is WHO - Independent Database Architecture
 #
 # HRM DB: Separate PostgreSQL managed by Django (not in this file)
 # CSB DB: PostgreSQL managed by CSB (Alembic migrations)

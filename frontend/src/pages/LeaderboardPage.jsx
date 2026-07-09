@@ -4,11 +4,6 @@ import api from '../services/api';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function isLeaderboardDay() {
-  const today = new Date();
-  return today.getDate() === 30;
-}
-
 function getRankStyle(rank) {
   if (rank === 1) return { bg: 'bg-amber-400', text: 'text-white', shadow: 'shadow-amber-200' };
   if (rank === 2) return { bg: 'bg-slate-300', text: 'text-white', shadow: 'shadow-slate-200' };
@@ -89,9 +84,9 @@ function PodiumCard({ entry, rank }) {
         border: isFirst ? '1px solid #f59e0b' : '1px solid #e2e8f0',
         borderRadius: '12px', padding: '8px 14px', textAlign: 'center',
       }}>
-        <div style={{ fontSize: '10px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Hoàn thành</div>
+        <div style={{ fontSize: '10px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Thành tích</div>
         <div style={{ fontWeight: 800, fontSize: isFirst ? '17px' : '14px', color: isFirst ? '#d97706' : '#0ea5e9', marginTop: 2 }}>
-          {entry.days_to_complete} ngày
+          {entry.days_to_complete !== undefined ? `${entry.days_to_complete} ngày • ${entry.raw_count} KN` : entry.score}
         </div>
       </div>
 
@@ -152,47 +147,10 @@ function LeaderboardRow({ entry }) {
 
       {/* Days + win date */}
       <div style={{ textAlign: 'right', flexShrink: 0 }}>
-        <div style={{ fontWeight: 800, fontSize: 15, color: '#0ea5e9' }}>{entry.days_to_complete} ngày</div>
-        <div style={{ fontSize: 11, color: '#94a3b8', marginTop: 2 }}>{entry.win_date}</div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Lock overlay (not day 30) ────────────────────────────────────────────────
-
-function LockedOverlay({ month, year }) {
-  const monthStr = String(month).padStart(2, '0');
-  return (
-    <div style={{
-      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      padding: '64px 24px', textAlign: 'center', gap: 20,
-    }}>
-      <div style={{
-        width: 96, height: 96, borderRadius: '50%',
-        background: 'linear-gradient(135deg,#f1f5f9,#e2e8f0)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.07)',
-      }}>
-        <Lock style={{ width: 40, height: 40, color: '#94a3b8' }} />
-      </div>
-      <div>
-        <h2 style={{ fontWeight: 800, fontSize: 22, color: '#1e293b', marginBottom: 8 }}>
-          Bảng Xếp Hạng Chưa Mở
-        </h2>
-        <p style={{ color: '#64748b', fontSize: 14, lineHeight: 1.7, maxWidth: 400 }}>
-          Bảng xếp hạng tháng <strong>{monthStr}/{year}</strong> sẽ được công bố vào{' '}
-          <strong>ngày 30 tháng {monthStr}</strong>.<br />
-          Hãy tiếp tục kết nối để lên hạng cao nhất! 💪
-        </p>
-      </div>
-      <div style={{
-        display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 20px',
-        background: 'linear-gradient(135deg,#eff6ff,#dbeafe)', borderRadius: 12,
-        border: '1px solid #bfdbfe', fontSize: 13, color: '#2563eb', fontWeight: 600,
-      }}>
-        <Calendar style={{ width: 16, height: 16 }} />
-        Công bố ngày 30 hàng tháng
+        <div style={{ fontWeight: 800, fontSize: 15, color: '#0ea5e9' }}>
+          {entry.days_to_complete !== undefined ? `${entry.days_to_complete} ngày • ${entry.raw_count} KN` : entry.score}
+        </div>
+        {entry.win_date && <div style={{ fontSize: 11, color: '#94a3b8', marginTop: 2 }}>{entry.win_date}</div>}
       </div>
     </div>
   );
@@ -205,21 +163,21 @@ export default function LeaderboardPage() {
   const [month, setMonth] = useState(today.getMonth() + 1);
   const [year, setYear] = useState(today.getFullYear());
   const [data, setData] = useState([]);
+  const [isFinal, setIsFinal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // all | operator | staff
-  const open = isLeaderboardDay();
 
   useEffect(() => {
-    if (!open) { setLoading(false); return; }
     setLoading(true);
     api.get(`/admin/leaderboard?month=${month}&year=${year}`)
       .then(res => {
+        setIsFinal(res.data?.is_final || false);
         const entries = res.data?.entries || res.data || [];
         setData(Array.isArray(entries) ? entries : []);
       })
       .catch(() => setData([]))
       .finally(() => setLoading(false));
-  }, [month, year, open]);
+  }, [month, year]);
 
   const filtered = data.filter(e => {
     if (filter === 'operator') return e.is_operator;
@@ -263,9 +221,9 @@ export default function LeaderboardPage() {
             <Trophy style={{ width: 32, height: 32 }} />
           </div>
           <div>
-            <h1 style={{ fontWeight: 800, fontSize: 26, margin: 0 }}>Bảng Xếp Hạng Kết Nối</h1>
+            <h1 style={{ fontWeight: 800, fontSize: 26, margin: 0 }}>{isFinal ? '🏆 Bảng Vàng Tổng Kết' : '⚡ Đua Top Kết Nối'}</h1>
             <p style={{ opacity: 0.75, margin: '4px 0 0', fontSize: 14 }}>
-              Công bố ngày 30 hàng tháng · Xếp hạng theo tốc độ hoàn thành
+              {isFinal ? 'Vinh danh những người hoàn thành nhanh nhất' : 'Cập nhật trực tiếp số lượng kết nối nhiều nhất'}
             </p>
           </div>
         </div>
@@ -284,30 +242,20 @@ export default function LeaderboardPage() {
             style={{ background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: 10, padding: '6px 10px', cursor: 'pointer', color: 'white', display: 'flex', alignItems: 'center' }}
           ><ChevronRight style={{ width: 18, height: 18 }} /></button>
 
-          {/* Filter tabs */}
+          {/* Filter tabs - chi de "Tat ca" */}
           <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
-            {[
-              { key: 'all', label: '🏅 Tất cả' },
-              { key: 'operator', label: '🔧 Operator' },
-              { key: 'staff', label: '💼 Staff' },
-            ].map(f => (
-              <button key={f.key} onClick={() => setFilter(f.key)} style={{
-                background: filter === f.key ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.15)',
-                color: filter === f.key ? '#1d4ed8' : 'white',
-                border: 'none', borderRadius: 10, padding: '6px 14px', cursor: 'pointer',
-                fontWeight: 600, fontSize: 12, transition: 'all 0.2s',
-              }}>{f.label}</button>
-            ))}
+            <button style={{
+              background: 'rgba(255,255,255,0.9)',
+              color: '#1d4ed8',
+              border: 'none', borderRadius: 10, padding: '6px 14px', cursor: 'default',
+              fontWeight: 600, fontSize: 12,
+            }}>🏅 Tất cả</button>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      {!open ? (
-        <div className="card" style={{ borderRadius: 20, overflow: 'hidden' }}>
-          <LockedOverlay month={month} year={year} />
-        </div>
-      ) : loading ? (
+      {loading ? (
         <div style={{ display: 'flex', justifyContent: 'center', padding: '80px 0' }}>
           <div className="w-10 h-10 border-2 border-primary-200 border-t-primary-600 rounded-full animate-spin" />
         </div>
@@ -323,7 +271,7 @@ export default function LeaderboardPage() {
           {top3.length > 0 && (
             <div className="card" style={{ borderRadius: 20, padding: '28px 24px 0' }}>
               <h2 style={{ fontWeight: 800, fontSize: 16, color: '#1e293b', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Trophy style={{ width: 20, height: 20, color: '#f59e0b' }} /> Top 3 Nhanh Nhất
+                <Trophy style={{ width: 20, height: 20, color: '#f59e0b' }} /> {isFinal ? 'Top 3 Nhanh Nhất' : 'Top 3 Năng Nổ Nhất'}
               </h2>
               <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12 }}>
                 {/* Reorder: 2nd | 1st | 3rd */}
@@ -338,7 +286,7 @@ export default function LeaderboardPage() {
           {rest.length > 0 && (
             <div>
               <h2 style={{ fontWeight: 700, fontSize: 15, color: '#475569', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Users style={{ width: 17, height: 17 }} /> Tất cả người hoàn thành ({filtered.length})
+                <Users style={{ width: 17, height: 17 }} /> {isFinal ? 'Tất cả người hoàn thành' : 'Tất cả người tham gia'} ({filtered.length})
               </h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {filtered.map(entry => <LeaderboardRow key={entry.id} entry={entry} />)}
@@ -349,10 +297,10 @@ export default function LeaderboardPage() {
           {/* Stats bar */}
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             {[
-              { icon: '🏆', label: 'Tổng hoàn thành', value: filtered.length },
+              { icon: isFinal ? '🏆' : '👥', label: isFinal ? 'Tổng hoàn thành' : 'Người tham gia', value: filtered.length },
               { icon: '🔧', label: 'Operator', value: filtered.filter(e => e.is_operator).length },
               { icon: '💼', label: 'Staff', value: filtered.filter(e => !e.is_operator).length },
-              { icon: '⚡', label: 'Nhanh nhất', value: top3[0] ? `${top3[0].days_to_complete} ngày` : 'N/A' },
+              { icon: '⚡', label: isFinal ? 'Nhanh nhất' : 'Dẫn đầu', value: top3[0] ? (isFinal ? `${top3[0].days_to_complete} ngày` : top3[0].score) : 'N/A' },
             ].map((s, i) => (
               <div key={i} className="card" style={{ flex: 1, minWidth: 120, borderRadius: 16, padding: '16px 18px', textAlign: 'center' }}>
                 <div style={{ fontSize: 24, marginBottom: 6 }}>{s.icon}</div>

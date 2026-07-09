@@ -7,7 +7,7 @@ def main():
     # Required for Windows multiprocessing support
     multiprocessing.freeze_support()
     
-    print("Starting CSB Connection Backend on http://0.0.0.0:7000")
+    print("Starting WHO Is WHO Backend on http://0.0.0.0:7000")
     
     uvicorn.run(
         "app.main:app",

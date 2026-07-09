@@ -6,7 +6,7 @@ except ImportError:
     USE_PYDANTIC_SETTINGS = False
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "CSB Connection API"
+    PROJECT_NAME: str = "WHO Is WHO API"
     
     # PostgreSQL Database — use CSB_DATABASE_URL to avoid collision with
     # any system-level DATABASE_URL environment variable.

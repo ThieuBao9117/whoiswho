@@ -1,5 +1,5 @@
 """
-CSB Connection API - Main Application
+WHO Is WHO API - Main Application
 
 Independent from HRM:
 - Uses its own database (csb_db)
@@ -16,7 +16,7 @@ from app.models import csb_models  # Ensure CSB models are registered (NOT HRM)
 # init_db()
 
 app = FastAPI(
-    title="CSB Connection API",
+    title="WHO Is WHO API",
     description="Connect Reward System - Independent from HRM Database",
     version="2.0.0"
 )
@@ -24,20 +24,25 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        # Production
+        "http://hrm.csbrg.com",
+        "https://hrm.csbrg.com",
+        # Local development
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:3000",
         "http://localhost:8080",
         "http://127.0.0.1:5173",
         "http://127.0.0.1:3000",
+        # Internal IPs
         "http://50.50.51.220:5173",
         "http://50.50.51.220:8000",
         "http://50.50.51.220",
         "http://50.50.50.24:5173",
         "http://50.50.50.24:7070",
         "http://50.50.50.24",
+        # Ngrok
         "https://8848-113-161-143-253.ngrok-free.app",
-        "https://8848-113-161-143-253.ngrok-free.app:8000",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -57,7 +62,7 @@ app.include_router(admin.router, prefix="/api/admin", tags=["Admin"])
 @app.get("/")
 def read_root():
     return {
-        "message": "CSB Connection API is running",
+        "message": "WHO Is WHO API is running",
         "database": "Independent from HRM",
         "version": "2.0.0"
     }

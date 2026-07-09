@@ -9,9 +9,10 @@ KHÔNG có FK trực tiếp sang auth_user hay hr_employee.
 - Khi thay đổi phòng ban/chức vụ
 - Khi nghỉ việc (status = 'Inactive')
 
-Database: SQLite (development) / PostgreSQL (production)
+Database: PostgreSQL (production)
 """
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Index
+from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
 from app.core.database import Base
 import uuid
@@ -26,12 +27,11 @@ class CSBEmployeeRef(Base):
     - Uses hrm_employee_id to track source record
     - Synced periodically via API
     - Read-only from CSB perspective (edit trong HRM)
-    - Works with both SQLite and PostgreSQL
     """
     __tablename__ = "csb_employee_refs"
-    
-    # Integer primary key for SQLite compatibility
-    id = Column(Integer, primary_key=True, autoincrement=True)
+
+    # UUID primary key - matches actual PostgreSQL database schema
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
     # Tham chiếu đến nguồn HRM
     hrm_employee_id = Column(Integer, nullable=True, index=True)
@@ -54,7 +54,7 @@ class CSBEmployeeRef(Base):
     status = Column(String(32), default="Active", index=True)
     join_date = Column(DateTime, nullable=True)
 
-    photo = Column(String(100), nullable=True)
+    photo = Column(String(500), nullable=True)
 
     # Metadata
     is_active = Column(Boolean, default=True, index=True)

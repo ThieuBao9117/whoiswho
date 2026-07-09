@@ -48,6 +48,8 @@ def search_connectors(
     part:       str = Query(None),
     position:   str = Query(None),
     role:       str = Query(None),
+    skip:       int = Query(0, ge=0),
+    limit:      int = Query(1000, ge=1, le=1000),
     current_user: CSBEmployeeRef = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -66,7 +68,8 @@ def search_connectors(
     if position:   query = query.filter(CSBEmployeeRef.position.ilike(f"%{position}%"))
     if role:       query = query.filter(CSBEmployeeRef.role.ilike(f"%{role}%"))
 
-    employees = query.order_by(CSBEmployeeRef.full_name).limit(100).all()
+    total = query.count()
+    employees = query.order_by(CSBEmployeeRef.full_name).offset(skip).limit(limit).all()
 
     # Build connection status map for current user
     # Check both: where user sent invites (new_hire) and received invites (connector)
@@ -105,7 +108,13 @@ def search_connectors(
             "conn_status":  conn_status,  # none | PENDING | ACCEPTED | REJECTED
         })
 
-    return result
+    return {
+        "items":    result,
+        "total":    total,
+        "skip":     skip,
+        "limit":    limit,
+        "has_more": (skip + limit) < total,
+    }
 
 
 @router.get("/{emp_id}")

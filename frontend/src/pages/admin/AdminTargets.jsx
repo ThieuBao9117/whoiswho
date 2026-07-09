@@ -7,7 +7,7 @@ export default function AdminTargets() {
   const [selectedMonth, setSelectedMonth] = useState("2026-03");
   const [target, setTarget] = useState({
     period_str: "2026-03", operator_required: 5, leader_required: 2,
-    pl_required: 1, tm_required: 1, gd_required: 0, reward_amount: 500000
+    pl_required: 1, tm_required: 1, gd_required: 0, reward_amount: 200000
   });
 
   useEffect(() => { fetchTarget(); }, [selectedMonth]);

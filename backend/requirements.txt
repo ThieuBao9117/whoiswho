@@ -1,4 +1,4 @@
-# CSB Connection Dependencies
+# WHO Is WHO Dependencies
 # Requires Python 3.11 or 3.12 (3.14 not supported yet)
 
 fastapi==0.110.0

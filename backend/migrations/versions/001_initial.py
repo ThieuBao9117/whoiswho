@@ -66,7 +66,7 @@ def upgrade() -> None:
         sa.Column('pl_required', sa.Integer(), server_default='1'),
         sa.Column('tm_required', sa.Integer(), server_default='1'),
         sa.Column('gd_required', sa.Integer(), server_default='0'),
-        sa.Column('reward_amount', sa.Float(), server_default='500000.0'),
+        sa.Column('reward_amount', sa.Float(), server_default='200000.0'),
         sa.Column('is_active', sa.Boolean(), server_default='true'),
         sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.func.now()),
         sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.func.now(), onupdate=sa.func.now()),

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Award, Users, CheckCircle2, X, ScanLine, Trophy, ArrowRight, Zap } from 'lucide-react';
 import api from '../services/api';
+import { getAvatarUrl } from '../utils/avatar';
 
 // ─── Confetti helper ──────────────────────────────────────────────────────────
 
@@ -185,7 +186,7 @@ export default function Dashboard({ user }) {
       try {
         const now = new Date();
         const [connRes, leaderRes] = await Promise.all([
-          api.get('/connections/my'),
+          api.get('/connections/all'),
           api.get(`/admin/leaderboard?month=${now.getMonth() + 1}&year=${now.getFullYear()}`),
         ]);
         setMyConnections(connRes.data);
@@ -210,17 +211,12 @@ export default function Dashboard({ user }) {
     }
   }, [user?.gameState?.has_won]);
 
-  const getCount = (role) => myConnections.filter(c => c.status === 'ACCEPTED' && c.connector?.role?.includes(role)).length;
-  const stats = [
-    { label: "Công nhân (Operator)", current: getCount("Operator"), max: 5 },
-    { label: "Trưởng ca (Leader)", current: getCount("Leader"), max: 2 },
-    { label: "Trưởng bộ phận", current: getCount("Part Leader"), max: 1 },
-    { label: "Trưởng nhóm", current: getCount("Team Manager"), max: 1 },
-    { label: "Giám đốc", current: getCount("GD"), max: 0 },
-  ];
-
   const gameState = user?.gameState || {};
   const isEligibleForReward = gameState.has_won;
+
+  const stats = [
+    { label: "Tiến độ kết nối", current: gameState.current_connections || 0, max: gameState.target_connections || 0 }
+  ];
 
   return (
     <div className="animate-fade-in space-y-6 pb-8">
@@ -245,7 +241,7 @@ export default function Dashboard({ user }) {
         <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="relative">
-              <img src={user?.profile?.photo || "https://i.pravatar.cc/150?u=ME"} alt="Avatar"
+              <img src={getAvatarUrl(user?.profile?.photo, user?.profile?.full_name)} alt="Avatar"
                 className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-primary-200 object-cover" />
               <div className="absolute -bottom-1 -right-1 bg-success-500 text-white p-1 rounded-full">
                 <CheckCircle2 className="h-3.5 w-3.5" />
@@ -254,17 +250,35 @@ export default function Dashboard({ user }) {
             <div>
               <h1 className="text-xl md:text-2xl font-heading font-bold text-surface-800">{user?.name}</h1>
               <div className="flex items-center gap-2 mt-1 flex-wrap">
-                <span className="badge badge-primary">{user?.profile?.department || "Nhân viên"}</span>
+                <span className="badge badge-primary">{user?.profile?.part || user?.profile?.department || "Nhân viên"}</span>
                 <span className="text-sm text-surface-400">{user?.profile?.emp_code}</span>
-                {gameState.is_operator !== undefined && (
-                  <span style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 4,
-                    background: gameState.is_operator ? 'linear-gradient(135deg,#3b82f6,#1d4ed8)' : 'linear-gradient(135deg,#8b5cf6,#6d28d9)',
-                    color: 'white', borderRadius: 999, padding: '2px 10px', fontSize: 11, fontWeight: 700,
-                  }}>
-                    {gameState.is_operator ? '🔧 Operator' : '💼 Staff'}
-                  </span>
-                )}
+                {(() => {
+                  const role = (gameState.role || user?.profile?.role || '').toLowerCase();
+                  const actualRole = gameState.role || user?.profile?.role || '';
+                  let icon = '💼';
+                  let bg = 'linear-gradient(135deg,#8b5cf6,#6d28d9)';
+                  if (role.includes('operator') || role.includes('công nhân')) {
+                    icon = '🔧'; bg = 'linear-gradient(135deg,#3b82f6,#1d4ed8)';
+                  } else if (role.includes('director') || role.includes('manager') || role.includes('giám đốc')) {
+                    icon = '🌟'; bg = 'linear-gradient(135deg,#f59e0b,#d97706)';
+                  } else if (role.includes('leader') || role.includes('trưởng')) {
+                    icon = '👑'; bg = 'linear-gradient(135deg,#10b981,#059669)';
+                  } else if (role.includes('engineer') || role.includes('kỹ sư')) {
+                    icon = '⚙️'; bg = 'linear-gradient(135deg,#06b6d4,#0284c7)';
+                  } else if (role.includes('inspector') || role.includes('qc') || role.includes('qa')) {
+                    icon = '🔍'; bg = 'linear-gradient(135deg,#8b5cf6,#6d28d9)';
+                  }
+                  if (!actualRole) return null;
+                  return (
+                    <span style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 4,
+                      background: bg,
+                      color: 'white', borderRadius: 999, padding: '2px 10px', fontSize: 11, fontWeight: 700,
+                    }}>
+                      {icon} {actualRole}
+                    </span>
+                  );
+                })()}
               </div>
             </div>
           </div>
@@ -279,7 +293,7 @@ export default function Dashboard({ user }) {
             <div className={`card p-4 flex-1 md:min-w-[120px] text-center ${isEligibleForReward ? 'border-accent-300 bg-accent-50' : ''}`}>
               <p className="text-xs text-surface-500 mb-1">Tiền thưởng</p>
               <p className="text-xl font-heading font-bold text-accent-600">
-                {isEligibleForReward ? '500K' : '0'} <span className="text-sm font-normal text-surface-400">VNĐ</span>
+                {isEligibleForReward ? '200K' : '0'} <span className="text-sm font-normal text-surface-400">VNĐ</span>
               </p>
             </div>
           </div>
@@ -316,7 +330,98 @@ export default function Dashboard({ user }) {
         </div>
       )}
 
+      {/* ── Thể Lệ Mini Game ──────────────────────────────────────────── */}
+      <div style={{
+        background: 'linear-gradient(135deg, #f0f9ff 0%, #faf5ff 50%, #fff7ed 100%)',
+        border: '1.5px solid #e0e7ff',
+        borderRadius: 20,
+        padding: '24px 28px',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Decorative blobs */}
+        <div style={{
+          position: 'absolute', top: -20, right: -20, width: 120, height: 120,
+          background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)',
+          borderRadius: '50%', pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute', bottom: -10, left: -10, width: 80, height: 80,
+          background: 'radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 70%)',
+          borderRadius: '50%', pointerEvents: 'none',
+        }} />
+
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+          <span style={{ fontSize: 22 }}>🎮</span>
+          <h3 style={{ fontSize: 16, fontWeight: 800, color: '#1e293b', margin: 0 }}>
+            Thể Lệ Mini Game:&nbsp;
+            <span style={{ background: 'linear-gradient(135deg,#3b82f6,#8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              WHO IS WHO?
+            </span>
+          </h3>
+        </div>
+
+        {/* Mục tiêu */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16,
+          background: 'linear-gradient(135deg,#dcfce7,#bbf7d0)',
+          borderRadius: 12, padding: '10px 16px',
+          border: '1px solid #86efac',
+        }}>
+          <span style={{ fontSize: 18 }}>🎯</span>
+          <p style={{ margin: 0, fontSize: 13, color: '#15803d', fontWeight: 700 }}>
+            Mục tiêu: Nhận ngay{' '}
+            <span style={{ color: '#166534', fontSize: 15 }}>200.000 VNĐ</span>
+            {' '}tiền thưởng khi hoàn thành thử thách làm quen!
+          </p>
+        </div>
+
+        {/* Quy định chạm mốc */}
+        <div>
+          <p style={{ fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span>📋</span> Quy định chạm mốc:
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {[
+              {
+                icon: '👷',
+                label: 'Nhân viên Sản Xuất (Operator)',
+                desc: 'Đạt 10 kết nối trong 1 tháng thử việc.',
+                color: '#1d4ed8', bg: '#eff6ff', border: '#bfdbfe',
+              },
+              {
+                icon: '👥',
+                label: 'Trưởng Nhóm (Team Leader)',
+                desc: 'Đạt 20 kết nối trong 1 tháng thử việc.',
+                color: '#7c3aed', bg: '#f5f3ff', border: '#ddd6fe',
+              },
+              {
+                icon: '🧑‍💼',
+                label: 'Nhân viên Văn Phòng (Staff)',
+                desc: 'Đạt 30 kết nối trong 2 tháng thử việc.',
+                color: '#0369a1', bg: '#f0f9ff', border: '#bae6fd',
+              },
+            ].map((item) => (
+              <div key={item.label} style={{
+                display: 'flex', alignItems: 'flex-start', gap: 10,
+                background: item.bg, border: `1px solid ${item.border}`,
+                borderRadius: 12, padding: '10px 14px',
+              }}>
+                <span style={{ fontSize: 16, marginTop: 1 }}>{item.icon}</span>
+                <div>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: item.color }}>{item.label}:</span>
+                  {' '}
+                  <span style={{ fontSize: 13, color: '#475569' }}>{item.desc}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Main content */}
+
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Quests */}
         <div className="md:col-span-8">
@@ -333,22 +438,50 @@ export default function Dashboard({ user }) {
                 <div className="w-10 h-10 border-2 border-primary-200 border-t-primary-600 rounded-full animate-spin" />
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 gap-x-8 gap-y-2">
+              <div className="space-y-4">
                 {stats.map((stat, i) => (
                   <ProgressBar key={i} label={stat.label} current={stat.current} max={stat.max}
                     isComplete={stat.max > 0 && stat.current >= stat.max} />
                 ))}
+
+                {/* Danh sách đã kết nối */}
+                <div className="mt-8 pt-6 border-t border-surface-100">
+                  <h3 className="text-sm font-bold text-surface-700 mb-4 flex items-center gap-2">
+                    <Users className="w-4 h-4 text-primary-500" />
+                    Đồng nghiệp đã kết nối ({myConnections.filter(c => c.status === 'ACCEPTED').length})
+                  </h3>
+                  {myConnections.filter(c => c.status === 'ACCEPTED').length > 0 ? (
+                    <div className="flex gap-4 overflow-x-auto pb-4 snap-x smooth-scrollbar">
+                      {myConnections.filter(c => c.status === 'ACCEPTED').map(c => {
+                        const person = c.other_user;
+                        if (!person) return null;
+                        return (
+                          <div key={c.id} className="flex flex-col items-center flex-shrink-0 w-20 snap-start">
+                            <img src={getAvatarUrl(person.photo, person.full_name)} className="w-14 h-14 rounded-full border-2 border-success-400 object-cover mb-2 shadow-sm" alt="" title={person.full_name} />
+                            <span className="text-[11px] font-medium text-surface-800 text-center leading-tight line-clamp-2" title={person.full_name}>{person.full_name}</span>
+                            <span className="text-[9px] text-surface-400 text-center mt-0.5 max-w-full overflow-hidden text-ellipsis whitespace-nowrap">{person.department || 'N/A'}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-center py-6 bg-surface-50 rounded-xl border border-dashed border-surface-200">
+                      <p className="text-sm text-surface-400">Bạn chưa có kết nối nào.</p>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
             {gameState.can_play ? (
               <Link to="/search" className="btn-primary w-full py-3.5 mt-8 flex items-center justify-center gap-2 text-base">
-                <Users className="h-5 w-5" /> Tìm đồng nghiệp để kết nối
+                <Users className="h-5 w-5" />
+                {gameState.has_won ? '⭐ Tiếp tục kết nối thêm' : 'Tìm đồng nghiệp để kết nối'}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             ) : (
               <button disabled className="btn-secondary w-full py-3.5 mt-8 opacity-50 cursor-not-allowed flex items-center justify-center gap-2">
-                <X className="h-5 w-5" /> Đã khóa
+                <X className="h-5 w-5" /> Đã hết thời hạn
               </button>
             )}
           </div>
@@ -404,7 +537,7 @@ export default function Dashboard({ user }) {
               💡 Mẹo nhanh
             </h3>
             <p className="text-sm text-surface-600 leading-relaxed">
-              Quét mã QR của <b className="text-primary-600">Trưởng ca</b> và <b className="text-accent-600">Trưởng nhóm</b> để hoàn thành nhiệm vụ nhanh hơn!
+              Hãy <b className="text-primary-600">chủ động kết nối</b> và quét mã QR của bất kỳ đồng nghiệp nào để sớm đạt được tiền thưởng nhé!
             </p>
             <Link to="/qr" className="mt-4 flex items-center gap-2 text-primary-600 font-semibold text-sm hover:text-primary-700 transition-colors">
               Quét QR ngay <ScanLine className="h-4 w-4" />

@@ -15,8 +15,8 @@ import NotificationsPage from './pages/NotificationsPage';
 import TVDashboard from './pages/TVDashboard';
 import LeaderboardPage from './pages/LeaderboardPage';
 import AdminConnections from './pages/admin/AdminConnections';
-import AdminTargets from './pages/admin/AdminTargets';
 import AdminReports from './pages/admin/AdminReports';
+import AdminTargets from './pages/admin/AdminTargets';
 
 // ----------------------
 // LOGIN PAGE
@@ -60,9 +60,9 @@ function LoginPage({ onLogin }) {
       <div className="card w-full max-w-md p-8 md:p-10 animate-fade-in">
         <div className="flex flex-col items-center mb-8">
           <div className="w-20 h-20 bg-primary-100 rounded-2xl flex items-center justify-center mb-4">
-            <img src="/logo.png" className="h-12 w-auto object-contain" alt="CSB Logo" />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} className="h-12 w-auto object-contain" alt="CSB Logo" />
           </div>
-          <h1 className="text-2xl font-heading font-bold text-surface-800 text-center">CSB Connection</h1>
+          <h1 className="text-2xl font-heading font-bold text-surface-800 text-center">WHO IS WHO</h1>
           <p className="text-surface-500 mt-1 text-sm">Hệ thống kết nối đồng nghiệp</p>
         </div>
 
@@ -182,9 +182,6 @@ function MobileBottomNav({ onLogout, notifCount = 0 }) {
           <Link to="/tv" target="_blank" className="flex flex-col items-center flex-1 py-1 text-surface-400">
             <LayoutDashboard className="h-5 w-5" /><span className="text-[10px] mt-0.5 font-medium">TV</span>
           </Link>
-          <Link to="/admin/targets" className={`flex flex-col items-center flex-1 py-1 ${isActive('/admin/targets') ? 'text-primary-600' : 'text-surface-400'}`}>
-            <Settings className="h-5 w-5" /><span className="text-[10px] mt-0.5 font-medium">Chỉ tiêu</span>
-          </Link>
           <Link to="/admin/reports" className={`flex flex-col items-center flex-1 py-1 ${isActive('/admin/reports') ? 'text-primary-600' : 'text-surface-400'}`}>
             <PieChart className="h-5 w-5" /><span className="text-[10px] mt-0.5 font-medium">Báo cáo</span>
           </Link>
@@ -238,39 +235,87 @@ function DesktopNavbar({ onLogout, user, notifCount = 0 }) {
   if (location.pathname === '/tv' || location.pathname.startsWith('/admin') || location.pathname === '/login') return null;
 
   const navLink = (path, label) => (
-    <Link to={path} className={`text-sm font-medium px-3 py-2 rounded-lg transition-colors ${location.pathname === path ? 'bg-primary-50 text-primary-700' : 'text-surface-600 hover:text-primary-600 hover:bg-surface-100'}`}>
+    <Link
+      to={path}
+      className={`nav-item text-sm font-medium px-2.5 py-1.5 rounded-lg transition-colors ${
+        location.pathname === path
+          ? 'bg-primary-50 text-primary-700'
+          : 'text-surface-600 hover:text-primary-600 hover:bg-surface-100'
+      }`}
+      style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
+    >
       {label}
     </Link>
   );
 
   return (
     <nav className="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-surface-200 hidden md:block shadow-sm">
-      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <img src="/logo.png" className="h-9 w-auto" alt="Logo" />
-          <span className="text-lg font-heading font-bold text-surface-800">CSB Connection</span>
+      <div className="max-w-7xl mx-auto px-4 py-2 navbar-inner" style={{ display: 'flex', alignItems: 'center' }}>
+        {/* Logo */}
+        <div className="nav-item gap-2" style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', flexShrink: 0 }}>
+          <img
+            src={`${import.meta.env.BASE_URL}logo.png`}
+            className="h-8 w-auto animate-pulse hover:animate-none transition-all cursor-pointer"
+            alt="Logo"
+            style={{ animationDuration: '2s' }}
+          />
+          <span className="text-base font-heading font-bold text-surface-800">WHO IS WHO</span>
         </div>
-        <div className="flex items-center gap-1">
+
+        {/* Nav links */}
+        <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', flex: 1, justifyContent: 'center' }}>
           {navLink('/', 'Trang chủ')}
-          {navLink('/search', 'Tìm kiếm')}
+          {navLink('/search', 'Tìm kiếm đồng nghiệp')}
           {navLink('/qr', 'Quét QR')}
           {navLink('/leaderboard', '🏆 Xếp hạng')}
-          <Link to="/notifications" className={`text-sm font-medium px-3 py-2 rounded-lg transition-colors relative ${location.pathname === '/notifications' ? 'bg-primary-50 text-primary-700' : 'text-surface-600 hover:text-primary-600 hover:bg-surface-100'}`}>
+          <Link
+            to="/notifications"
+            className={`nav-item text-sm font-medium px-2.5 py-1.5 rounded-lg transition-colors relative ${
+              location.pathname === '/notifications'
+                ? 'bg-primary-50 text-primary-700'
+                : 'text-surface-600 hover:text-primary-600 hover:bg-surface-100'
+            }`}
+            style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
+          >
             Thông báo
-            {notifCount > 0 && <span className="absolute -top-0.5 -right-0.5 bg-danger-500 text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full">{notifCount > 9 ? '9+' : notifCount}</span>}
+            {notifCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-danger-500 text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                {notifCount > 9 ? '9+' : notifCount}
+              </span>
+            )}
           </Link>
           {user?.isAdmin && (
-            <Link to="/admin/reports" className="btn-primary text-xs px-4 py-2 ml-2">Quản trị</Link>
+            <Link to="/admin/reports" className="nav-item btn-primary text-xs px-3 py-1.5 ml-1" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>Quản trị</Link>
           )}
-          <div className="h-6 w-px bg-surface-200 mx-2" />
-          <div className="flex items-center gap-2 bg-surface-50 rounded-xl px-3 py-1.5">
-            <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-sm">
+          <Link
+            to="/tv"
+            target="_blank"
+            className="nav-item text-sm font-medium px-2.5 py-1.5 rounded-lg transition-colors text-surface-600 hover:text-primary-600 hover:bg-surface-100 gap-1"
+            style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', flexShrink: 0 }}
+            title="Mở màn hình TV"
+          >
+            📺 TV
+          </Link>
+        </div>
+
+        {/* User info */}
+        <div className="nav-user" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
+          <div className="h-5 w-px bg-surface-200" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#f8fafc', borderRadius: '0.75rem', padding: '0.25rem 0.625rem', flexShrink: 0 }}>
+            <div className="w-7 h-7 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-xs" style={{ flexShrink: 0 }}>
               {user?.name?.charAt(0) || 'U'}
             </div>
-            <span className="text-sm font-medium text-surface-700 hidden lg:block">{user?.name}</span>
+            <span className="text-sm font-medium text-surface-700 hidden lg:block" style={{ whiteSpace: 'nowrap', maxWidth: '130px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {user?.name}
+            </span>
           </div>
-          <button onClick={onLogout} className="text-surface-400 hover:text-danger-500 p-2 rounded-lg hover:bg-danger-50 transition-colors" title="Đăng xuất">
-            <LogOut className="h-5 w-5" />
+          <button
+            onClick={onLogout}
+            className="text-surface-400 hover:text-danger-500 p-1.5 rounded-lg hover:bg-danger-50 transition-colors"
+            style={{ flexShrink: 0 }}
+            title="Đăng xuất"
+          >
+            <LogOut className="h-4 w-4" />
           </button>
         </div>
       </div>
@@ -298,13 +343,16 @@ function AdminSidebar({ onLogout }) {
         </div>
         <div>
           <span className="font-heading font-bold text-surface-800">Quản trị</span>
-          <p className="text-xs text-surface-400">CSB Connection</p>
+          <p className="text-xs text-surface-400">WHO IS WHO</p>
         </div>
       </div>
       <div className="p-3 flex-1 space-y-1">
-        {sideLink('/admin/connections', <UserCheck className="w-5 h-5" />, 'Yêu cầu kết nối')}
-        {sideLink('/admin/targets', <Settings className="w-5 h-5" />, 'Thiết lập chỉ tiêu')}
+        {sideLink('/admin/connections', <UserCheck className="w-5 h-5" />, 'Tiến độ & kết nối')}
         {sideLink('/admin/reports', <PieChart className="w-5 h-5" />, 'Báo cáo')}
+        {sideLink('/admin/targets', <Settings className="w-5 h-5" />, 'Cấu hình mục tiêu')}
+        <Link to="/tv" target="_blank" className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-surface-500 hover:bg-primary-50 hover:text-primary-700 transition-colors">
+          <LayoutDashboard className="w-5 h-5" /><span>📺 Màn hình TV</span>
+        </Link>
         <Link to="/" className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-surface-500 hover:bg-surface-100 hover:text-surface-700 transition-colors">
           <Home className="w-5 h-5" /><span>Về trang chủ</span>
         </Link>
@@ -378,8 +426,8 @@ export default function App() {
             <div className="flex-1 flex flex-col min-w-0 pb-16 md:pb-0 overflow-y-auto">
               <Routes>
                 <Route path="connections" element={<AdminConnections />} />
-                <Route path="targets" element={<AdminTargets />} />
                 <Route path="reports" element={<AdminReports />} />
+                <Route path="targets" element={<AdminTargets />} />
                 <Route path="*" element={<Navigate to="reports" />} />
               </Routes>
             </div>

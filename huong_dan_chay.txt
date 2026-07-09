@@ -15,3 +15,4 @@ Sau khi chạy xong, bạn có thể truy cập:
 
 Lưu ý: Bạn cần phải cài đặt và đang bật phần mềm Docker Desktop trên máy tính Windows của bạn trước khi chạy hệ thống.
 Dừng hệ thống: Mở terminal ở thư mục dự án và chạy `docker-compose down`.
+l

@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Search, Users, CheckCircle2, Clock, Filter, X, Building2, ChevronDown, ChevronRight, UserPlus } from 'lucide-react';
+import { Search, Users, CheckCircle2, Clock, Filter, X, Building2, ChevronDown, ChevronRight, UserPlus, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../services/api';
+import { getAvatarUrl } from '../utils/avatar';
+
+const PAGE_SIZE = 1000;
 
 const CONN_STATUS = {
   ACCEPTED: { label: 'Đã kết nối', cls: 'badge-success', icon: <CheckCircle2 className="w-3.5 h-3.5" /> },
@@ -13,7 +16,11 @@ const CONN_STATUS = {
 
 export default function SearchPage() {
   const [employees, setEmployees] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [skip, setSkip] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [filterOpts, setFilterOpts] = useState({ entities:[], divisions:[], departments:[], teams:[], parts:[], positions:[], roles:[] });
   const [showFilters, setShowFilters] = useState(false);
   const [collapsedDepts, setCollapsedDepts] = useState({});
@@ -27,40 +34,74 @@ export default function SearchPage() {
   const [filterPart, setFilterPart] = useState('');
   const [filterPos, setFilterPos] = useState('');
 
+  // Build params object from current filters
+  const buildParams = useCallback((skipVal = 0) => {
+    const params = { skip: skipVal, limit: PAGE_SIZE };
+    if (searchTerm)   params.name = searchTerm;
+    if (filterEntity) params.entity = filterEntity;
+    if (filterDiv)    params.division = filterDiv;
+    if (filterDept)   params.department = filterDept;
+    if (filterTeam)   params.team = filterTeam;
+    if (filterPart)   params.part = filterPart;
+    if (filterPos)    params.position = filterPos;
+    return params;
+  }, [searchTerm, filterEntity, filterDiv, filterDept, filterTeam, filterPart, filterPos]);
+
   useEffect(() => {
     api.get('/connectors/filters').then(r => setFilterOpts(r.data)).catch(() => {});
   }, []);
 
-  useEffect(() => { fetchConnectors(); }, [location.key]);
-  useEffect(() => {
-    const interval = setInterval(fetchConnectors, 10000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const t = setTimeout(fetchConnectors, 300);
-    return () => clearTimeout(t);
-  }, [searchTerm, filterEntity, filterDiv, filterDept, filterTeam, filterPart, filterPos]);
-
-  const fetchConnectors = async () => {
-    setLoading(true);
+  // Reset and fetch fresh when filters change
+  const fetchConnectors = useCallback(async (silent = false) => {
+    if (!silent) {
+      setLoading(true);
+      setSkip(0);
+    }
     try {
-      const params = {};
-      if (searchTerm) params.name = searchTerm;
-      if (filterEntity) params.entity = filterEntity;
-      if (filterDiv) params.division = filterDiv;
-      if (filterDept) params.department = filterDept;
-      if (filterTeam) params.team = filterTeam;
-      if (filterPart) params.part = filterPart;
-      if (filterPos) params.position = filterPos;
-      const res = await api.get('/connectors/search', { params });
-      setEmployees(res.data);
-    } catch (err) {
-      toast.error('Không thể tải danh sách nhân sự');
+      const res = await api.get('/connectors/search', { params: buildParams(0) });
+      const data = res.data;
+      setEmployees(data.items || []);
+      setTotal(data.total || 0);
+      setHasMore(data.has_more || false);
+      if (!silent) setSkip(PAGE_SIZE);
+    } catch {
+      if (!silent) toast.error('Không thể tải danh sách nhân sự');
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
+    }
+  }, [buildParams]);
+
+  // Load more (append)
+  const loadMore = async () => {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    try {
+      const res = await api.get('/connectors/search', { params: buildParams(skip) });
+      const data = res.data;
+      setEmployees(prev => [...prev, ...(data.items || [])]);
+      setHasMore(data.has_more || false);
+      setSkip(s => s + PAGE_SIZE);
+    } catch {
+      toast.error('Không thể tải thêm');
+    } finally {
+      setLoadingMore(false);
     }
   };
+
+  // Refetch on location change
+  useEffect(() => { fetchConnectors(false); }, [location.key, fetchConnectors]);
+
+  // Refetch on filter/search change (debounced)
+  useEffect(() => {
+    const t = setTimeout(() => fetchConnectors(false), 300);
+    return () => clearTimeout(t);
+  }, [searchTerm, filterEntity, filterDiv, filterDept, filterTeam, filterPart, filterPos, fetchConnectors]);
+
+  // Auto-refresh connection statuses every 10s (without resetting pagination)
+  useEffect(() => {
+    const interval = setInterval(() => fetchConnectors(true), 10000);
+    return () => clearInterval(interval);
+  }, [fetchConnectors]);
 
   const handleInvite = async (emp) => {
     try {
@@ -79,10 +120,30 @@ export default function SearchPage() {
     setCollapsedDepts(prev => ({ ...prev, [dept]: !prev[dept] }));
   };
 
+  const normalizeDeptGroup = (deptStr) => {
+    if (!deptStr) return 'Chưa phân phòng';
+    const s = deptStr.trim().toUpperCase();
+    
+    const prodWords = [
+      'AS/AT/PA/COAT', 'TECHNICIAN', 'BORING', 'TURNING', 'COATING', 
+      'ASEEMBLY', 'ASSEMBLY', 'TEAM LEADER', 'PACKING', 'AFTERTREATMENT', 
+      'IH-GEAR', 'MACHINING', 'GEAR', 'IH', 'DRILLING',
+      'ENGINEERING & MANAGEMENT', 'SCHEDULING'
+    ];
+    if (prodWords.some(w => s.includes(w))) return 'Production';
+    if (/\bGC\b/.test(s)) return 'Production';
+    if (/\bMI\b/.test(s)) return 'IT';
+    if (s.includes('ACCOUNT')) return 'Finance';
+    
+    return deptStr;
+  };
+
   // Group employees by department
   const grouped = {};
   employees.forEach(emp => {
-    const dept = emp.department || 'Chưa phân phòng';
+    let rawDept = emp.part || emp.department || 'Chưa phân phòng';
+    const dept = normalizeDeptGroup(rawDept);
+    
     if (!grouped[dept]) grouped[dept] = [];
     grouped[dept].push(emp);
   });
@@ -158,7 +219,10 @@ export default function SearchPage() {
         {/* Summary */}
         {!loading && (
           <div className="flex flex-wrap items-center gap-4 text-sm mt-3">
-            <span className="text-surface-500">Tổng: <strong className="text-surface-800">{employees.length}</strong> người</span>
+            <span className="text-surface-500">
+              Hiển thị: <strong className="text-surface-800">{employees.length}</strong>
+              {total > 0 && <span className="text-surface-400"> / {total} người</span>}
+            </span>
             <span className="text-surface-300">|</span>
             <span className="text-success-600 flex items-center gap-1"><CheckCircle2 className="w-4 h-4" /> Đã kết nối: <strong>{totalConnected}</strong></span>
             <span className="text-surface-300">|</span>
@@ -168,7 +232,7 @@ export default function SearchPage() {
       </div>
 
       {/* Results grouped by department */}
-      {loading ? (
+      {loading && employees.length === 0 ? (
         <div className="py-20 flex justify-center">
           <div className="w-10 h-10 border-2 border-primary-200 border-t-primary-600 rounded-full animate-spin" />
         </div>
@@ -211,7 +275,7 @@ export default function SearchPage() {
                         const statusConf = CONN_STATUS[cs] || CONN_STATUS.none;
                         return (
                           <div key={emp.id} className="flex items-center gap-3 p-4 hover:bg-surface-50 transition-colors sm:border-r sm:border-b border-surface-100 last:border-r-0">
-                            <img src={emp.photo || `https://i.pravatar.cc/150?u=${emp.id}`}
+                            <img src={getAvatarUrl(emp.photo, emp.full_name)}
                               className="w-11 h-11 rounded-full object-cover border-2 border-surface-200 flex-shrink-0" alt="" />
                             <div className="flex-1 min-w-0">
                               <h4 className="font-semibold text-surface-800 text-sm truncate">{emp.full_name}</h4>
@@ -243,6 +307,33 @@ export default function SearchPage() {
               </div>
             );
           })}
+
+          {/* Load More Button */}
+          {hasMore && (
+            <div className="flex flex-col items-center gap-2 py-4">
+              <p className="text-sm text-surface-400">
+                Đang hiển thị <strong className="text-surface-600">{employees.length}</strong> / <strong className="text-surface-600">{total}</strong> nhân viên
+              </p>
+              <button
+                onClick={loadMore}
+                disabled={loadingMore}
+                className="flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-60 text-white font-semibold rounded-xl transition-all shadow-sm hover:shadow-md"
+              >
+                {loadingMore ? (
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Đang tải...</>
+                ) : (
+                  <><Users className="w-4 h-4" /> Tải thêm {Math.min(PAGE_SIZE, total - employees.length)} người</>
+                )}
+              </button>
+            </div>
+          )}
+
+          {/* All loaded indicator */}
+          {!hasMore && total > PAGE_SIZE && (
+            <div className="text-center py-3 text-sm text-surface-400">
+              ✅ Đã hiển thị tất cả <strong>{total}</strong> nhân viên
+            </div>
+          )}
         </div>
       ) : (
         <div className="card py-20 text-center">

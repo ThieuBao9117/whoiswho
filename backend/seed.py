@@ -99,7 +99,7 @@ def seed_data():
                 pl_required=1,
                 tm_required=1,
                 gd_required=0,
-                reward_amount=500000.0
+                reward_amount=200000.0
             )
             db.add(target)
 

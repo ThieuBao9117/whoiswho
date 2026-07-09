@@ -27,6 +27,7 @@ class EmployeeBase(BaseModel):
     role: Optional[str] = None
     status: Optional[str] = None
     join_date: Optional[datetime] = None
+    photo: Optional[str] = None
     is_active: bool
     last_synced_at: Optional[datetime] = None
 
@@ -45,6 +46,7 @@ class UserMe(BaseModel):
     department: Optional[str] = None
     part: Optional[str] = None
     role: Optional[str] = None
+    photo: Optional[str] = None
     status: str
     is_active: bool
 

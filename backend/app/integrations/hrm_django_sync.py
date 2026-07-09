@@ -1,8 +1,8 @@
 """
-Django HRM - CSB Connection Integration
+Django HRM - WHO Is WHO Integration
 
 This module provides utilities for HRM Django to:
-1. Generate JWT tokens for CSB Connection SSO
+1. Generate JWT tokens for WHO Is WHO SSO
 2. Sync employee data to CSB via API
 3. Handle redirect to CSB with authentication
 
@@ -16,6 +16,24 @@ ImportError when this module is scanned in the FastAPI environment.
 """
 import datetime
 import requests
+
+
+def _safe_field(val):
+    """Convert Django ImageField/FileField to URL string safely for JSON serialization."""
+    if val is None:
+        return None
+    try:
+        from django.db.models.fields.files import FieldFile
+        if isinstance(val, FieldFile):
+            if not val.name:
+                return None
+            try:
+                return val.url
+            except Exception:
+                return str(val.name)
+    except ImportError:
+        pass
+    return str(val) if val else None
 
 
 # ============================================================
@@ -33,7 +51,7 @@ import requests
 
 def generate_csb_token(user):
     """
-    Generate JWT token for CSB Connection SSO.
+    Generate JWT token for WHO Is WHO SSO.
     
     Usage in Django view:
         token = generate_csb_token(request.user)
@@ -67,7 +85,7 @@ def generate_csb_token(user):
 
 def sync_employee_to_csb(employee):
     """
-    Sync a single employee from HRM → CSB Connection.
+    Sync a single employee from HRM → WHO Is WHO.
     
     Call this when:
     - Employee is created
@@ -98,12 +116,12 @@ def sync_employee_to_csb(employee):
         "username": user.username if user else f"emp_{employee.emp_code}",
         "full_name": employee.full_name,
         "email": user.email if user else None,
-        "department": getattr(employee, 'department', None),
-        "part": getattr(employee, 'part', None),
+        "department": getattr(employee, 'department', None) or getattr(employee, 'division', None),
+        "part": _safe_field(getattr(employee, 'part', None)),
         "role": getattr(employee, 'role', None),
         "status": getattr(employee, 'status', 'Active'),
         "join_date": getattr(employee, 'join_date', None).isoformat() if getattr(employee, 'join_date', None) else None,
-        "photo": getattr(employee, 'photo', None),
+        "photo": _safe_field(getattr(employee, 'photo', None)),
     }
     
     try:
@@ -163,12 +181,12 @@ def batch_sync_employees_to_csb(employees_queryset=None):
             "username": user.username if user else f"emp_{employee.emp_code}",
             "full_name": employee.full_name,
             "email": user.email if user else None,
-            "department": getattr(employee, 'department', None),
-            "part": getattr(employee, 'part', None),
+            "department": getattr(employee, 'department', None) or getattr(employee, 'division', None),
+            "part": _safe_field(getattr(employee, 'part', None)),
             "role": getattr(employee, 'role', None),
             "status": getattr(employee, 'status', 'Active'),
             "join_date": getattr(employee, 'join_date', None).isoformat() if getattr(employee, 'join_date', None) else None,
-            "photo": getattr(employee, 'photo', None),
+            "photo": _safe_field(getattr(employee, 'photo', None)),
         })
     
     try:
@@ -191,13 +209,13 @@ def batch_sync_employees_to_csb(employees_queryset=None):
 
 def csb_sso_redirect(request):
     """
-    Django view for SSO redirect to CSB Connection.
+    Django view for SSO redirect to WHO Is WHO.
     
     Add to urls.py:
         path('csb/login/', csb_sso_redirect, name='csb_sso_redirect'),
     
     Usage:
-        <a href="{% url 'csb_sso_redirect' %}">Go to CSB Connection</a>
+        <a href="{% url 'csb_sso_redirect' %}">Go to WHO Is WHO</a>
     """
     if not request.user.is_authenticated:
         from django.shortcuts import redirect

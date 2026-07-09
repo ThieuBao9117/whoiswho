@@ -3,9 +3,10 @@ CRW Models - Connect Reward System
 Independent database - No foreign keys to HRM tables
 
 All employee references go through csb_employee_refs table.
-Database: SQLite (development) / PostgreSQL (production)
+Database: PostgreSQL (production)
 """
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Enum, Float, Index, Text
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Enum, Float, Text
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
@@ -41,7 +42,7 @@ class CRWTarget(Base):
     """Connection targets by period (week/month/year)"""
     __tablename__ = "crw_targets"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     target_type = Column(Enum(TargetType), default=TargetType.MONTH)
     period_str = Column(String(7), nullable=True, index=True)  # e.g. "2026-03"
 
@@ -51,7 +52,7 @@ class CRWTarget(Base):
     tm_required = Column(Integer, default=1)   # Team Manager
     gd_required = Column(Integer, default=0)   # GD
 
-    reward_amount = Column(Float, default=500000.0)
+    reward_amount = Column(Float, default=200000.0)
     is_active = Column(Boolean, default=True, index=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -65,11 +66,11 @@ class CRWConnection(Base):
     """Connection between new hire and connector"""
     __tablename__ = "crw_connections"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
     # References to csb_employee_refs (NOT HRM directly)
-    new_hire_id = Column(Integer, ForeignKey("csb_employee_refs.id"), nullable=False, index=True)
-    connector_id = Column(Integer, ForeignKey("csb_employee_refs.id"), nullable=False, index=True)
+    new_hire_id = Column(UUID(as_uuid=True), ForeignKey("csb_employee_refs.id"), nullable=False, index=True)
+    connector_id = Column(UUID(as_uuid=True), ForeignKey("csb_employee_refs.id"), nullable=False, index=True)
 
     status = Column(Enum(ConnectionStatus), default=ConnectionStatus.PENDING, index=True)
     created_at = Column(DateTime, default=datetime.utcnow, index=True)
@@ -84,17 +85,17 @@ class CRWReward(Base):
     """Reward issued for achieving connection targets"""
     __tablename__ = "crw_rewards"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
     # References to csb_employee_refs
-    employee_id = Column(Integer, ForeignKey("csb_employee_refs.id"), nullable=False, index=True)
-    target_id = Column(Integer, ForeignKey("crw_targets.id"), nullable=False, index=True)
+    employee_id = Column(UUID(as_uuid=True), ForeignKey("csb_employee_refs.id"), nullable=False, index=True)
+    target_id = Column(UUID(as_uuid=True), ForeignKey("crw_targets.id"), nullable=False, index=True)
 
     achieved_date = Column(DateTime, default=datetime.utcnow)
     status = Column(Enum(RewardStatus), default=RewardStatus.PENDING, index=True)
 
     # Reference to auth user who approved (can be null if auto-approved)
-    approved_by_ref_id = Column(Integer, ForeignKey("csb_employee_refs.id"), nullable=True)
+    approved_by_ref_id = Column(UUID(as_uuid=True), ForeignKey("csb_employee_refs.id"), nullable=True)
     notes = Column(String, nullable=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -110,14 +111,14 @@ class CRWProgressSnapshot(Base):
     """Monthly statistics snapshots"""
     __tablename__ = "crw_progress_snapshots"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     snapshot_month = Column(String(7), unique=True, index=True)  # e.g. "2026-03"
 
     total_new_hires = Column(Integer, default=0)
     total_connections = Column(Integer, default=0)
     total_reward_amount = Column(Float, default=0.0)
 
-    # JSON column for department breakdown (SQLite compatible)
+    # JSON column for department breakdown
     connections_by_dept = Column(Text, nullable=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -127,15 +128,15 @@ class CSBAuditLog(Base):
     """Audit trail for all changes in CSB system"""
     __tablename__ = "csb_audit_logs"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
     table_name = Column(String(50), nullable=False, index=True)
-    record_id = Column(Integer, nullable=False, index=True)
+    record_id = Column(UUID(as_uuid=True), nullable=False, index=True)
 
     # Who made the change
-    changed_by_ref_id = Column(Integer, ForeignKey("csb_employee_refs.id"), nullable=True)
+    changed_by_ref_id = Column(UUID(as_uuid=True), ForeignKey("csb_employee_refs.id"), nullable=True)
 
-    # Data before and after change (JSON as Text for SQLite)
+    # Data before and after change (JSON as Text)
     old_values = Column(Text, nullable=True)
     new_values = Column(Text, nullable=True)
 

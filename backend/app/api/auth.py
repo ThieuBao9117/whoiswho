@@ -1,5 +1,5 @@
 """
-Authentication API - CSB Connection
+Authentication API - WHO Is WHO
 
 CSB uses JWT tokens from HRM (shared SECRET_KEY).
 Two auth flows:
@@ -170,7 +170,7 @@ def read_users_me(current_user: CSBEmployeeRef = Depends(get_current_user), db: 
             "status": current_user.status,
             "is_active": current_user.is_active,
             "join_date": current_user.join_date.isoformat() if current_user.join_date else None,
-            "photo": None,  # Can be added later
+            "photo": current_user.photo,
         }
     }
 

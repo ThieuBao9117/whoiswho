@@ -13,6 +13,7 @@ class EmployeeOut(BaseModel):
     part: Optional[str] = None
     role: Optional[str] = None
     status: Optional[str] = None
+    photo: Optional[str] = None
 
     class Config:
         from_attributes = True
