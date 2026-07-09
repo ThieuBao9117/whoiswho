@@ -124,7 +124,7 @@ function SSOHandler({ onLogin }) {
     const processSSO = async () => {
       try {
         // Exchange HRM token for CSB access token
-        const response = await api.post(`/auth/sso-login?token=${hrmToken}`);
+        const response = await api.post(`/auth/sso-login?token=${hrmToken}`, {});
         const { access_token } = response.data;
         localStorage.setItem('csb_token', access_token);
 
