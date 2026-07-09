@@ -7,7 +7,9 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
+    timeout: 15000, // 15s - tránh treo vô tận khi backend deadlock
 });
+
 
 // Interceptor to add token if available
 api.interceptors.request.use((config) => {

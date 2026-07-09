@@ -106,8 +106,13 @@ function LoginPage({ onLogin }) {
 // ----------------------
 // SSO HANDLER
 // ----------------------
+const HRM_BASE_URL = 'http://hrm.csbrg.com';
+const HRM_SSO_URL = `${HRM_BASE_URL}/accounts/go-to-csb/`;
+
 function SSOHandler({ onLogin }) {
-  const [status, setStatus] = useState('Đang xác thực tài khoản từ HRM...');
+  const [phase, setPhase] = useState('loading'); // loading | error_token | error_user | error_server
+  const [errorMsg, setErrorMsg] = useState('');
+  const [countdown, setCountdown] = useState(5);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -138,31 +143,144 @@ function SSOHandler({ onLogin }) {
           profile: userData.employee_profile,
           gameState: userData.game_state,
         };
-        
+
         onLogin(mappedUser);
         toast.success('Đăng nhập thành công qua hệ thống nhân sự!');
         navigate('/');
       } catch (err) {
-        console.error(err);
-        setStatus('Xác thực thất bại! Token không hợp lệ hoặc đã hết hạn.');
-        toast.error('Đăng nhập SSO thất bại. Vui lòng đăng nhập lại từ HRM.');
-        setTimeout(() => navigate('/login'), 2000);
+        const status = err?.response?.status;
+        const detail = err?.response?.data?.detail || '';
+        const isTimeout = err?.code === 'ECONNABORTED' || err?.message?.includes('timeout');
+        const isNetworkErr = !err?.response && !isTimeout;
+
+        if (isTimeout || isNetworkErr) {
+          // Backend timeout / không kết nối được → thử lại qua HRM
+          setErrorMsg('Máy chủ WHO IS WHO không phản hồi. Vui lòng thử lại sau ít phút.');
+          setPhase('error_server');
+        } else if (status === 401) {
+          // Token hết hạn hoặc không hợp lệ → redirect HRM lấy token mới
+          setErrorMsg('Token xác thực đã hết hạn. Đang tự động lấy token mới từ HRM...');
+          setPhase('error_token');
+        } else if (status === 404) {
+          // User không có trong hệ thống WHO
+          setErrorMsg(`Tài khoản chưa được đồng bộ sang hệ thống WHO IS WHO. (${detail})`);
+          setPhase('error_user');
+        } else if (status === 403) {
+          // Tài khoản inactive
+          setErrorMsg('Tài khoản của bạn đã bị vô hiệu hóa. Liên hệ HR để được hỗ trợ.');
+          setPhase('error_user');
+        } else {
+          // Lỗi server → cho đăng nhập thủ công
+          setErrorMsg('Máy chủ WHO IS WHO đang gặp sự cố. Vui lòng thử đăng nhập thủ công.');
+          setPhase('error_server');
+        }
       }
+
     };
 
     processSSO();
   }, [location, navigate, onLogin]);
 
+  // Countdown & auto-redirect khi token hết hạn
+  useEffect(() => {
+    if (phase !== 'error_token') return;
+    if (countdown <= 0) {
+      window.location.href = HRM_SSO_URL;
+      return;
+    }
+    const t = setTimeout(() => setCountdown(c => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [phase, countdown]);
+
+  // ---- UI ----
+  if (phase === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4 bg-surface-50">
+        <div className="card p-8 flex flex-col items-center max-w-sm w-full text-center">
+          <div className="w-12 h-12 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mb-4" />
+          <h2 className="text-lg font-bold text-surface-800">Đang xử lý SSO</h2>
+          <p className="text-surface-500 mt-2 text-sm">Đang xác thực tài khoản từ HRM...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (phase === 'error_token') {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4 bg-surface-50">
+        <div className="card p-8 flex flex-col items-center max-w-sm w-full text-center gap-4">
+          <div className="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center">
+            <span className="text-2xl">🔄</span>
+          </div>
+          <h2 className="text-lg font-bold text-surface-800">Token đã hết hạn</h2>
+          <p className="text-surface-500 text-sm">{errorMsg}</p>
+          <div className="w-16 h-16 rounded-full border-4 border-primary-100 flex items-center justify-center">
+            <span className="text-2xl font-bold text-primary-600">{countdown}</span>
+          </div>
+          <p className="text-surface-400 text-xs">Tự động chuyển về HRM sau {countdown} giây...</p>
+          <button
+            onClick={() => { window.location.href = HRM_SSO_URL; }}
+            className="btn-primary w-full py-2.5"
+          >
+            Quay lại HRM ngay
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (phase === 'error_user') {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4 bg-surface-50">
+        <div className="card p-8 flex flex-col items-center max-w-sm w-full text-center gap-4">
+          <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center">
+            <span className="text-2xl">⚠️</span>
+          </div>
+          <h2 className="text-lg font-bold text-surface-800">Không thể đăng nhập</h2>
+          <p className="text-surface-500 text-sm">{errorMsg}</p>
+          <button
+            onClick={() => { window.location.href = HRM_SSO_URL; }}
+            className="btn-primary w-full py-2.5"
+          >
+            Thử lại từ HRM
+          </button>
+          <button
+            onClick={() => navigate('/login')}
+            className="text-surface-400 text-sm hover:text-surface-600 underline"
+          >
+            Đăng nhập thủ công
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // error_server
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-surface-50">
-      <div className="card p-8 flex flex-col items-center max-w-sm w-full text-center">
-        <div className="w-12 h-12 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mb-4" />
-        <h2 className="text-lg font-bold text-surface-800">Đang xử lý SSO</h2>
-        <p className="text-surface-500 mt-2 text-sm">{status}</p>
+      <div className="card p-8 flex flex-col items-center max-w-sm w-full text-center gap-4">
+        <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center">
+          <span className="text-2xl">🔌</span>
+        </div>
+        <h2 className="text-lg font-bold text-surface-800">Lỗi kết nối máy chủ</h2>
+        <p className="text-surface-500 text-sm">{errorMsg}</p>
+        <button
+          onClick={() => navigate('/login')}
+          className="btn-primary w-full py-2.5"
+        >
+          Đăng nhập thủ công
+        </button>
+        <button
+          onClick={() => { window.location.href = HRM_SSO_URL; }}
+          className="text-surface-400 text-sm hover:text-surface-600 underline"
+        >
+          Thử lại từ HRM
+        </button>
       </div>
     </div>
   );
 }
+
 
 // ----------------------
 // MOBILE BOTTOM NAV
