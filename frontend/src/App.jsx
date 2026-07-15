@@ -106,7 +106,7 @@ function LoginPage({ onLogin }) {
 // ----------------------
 // SSO HANDLER
 // ----------------------
-const HRM_BASE_URL = 'http://hrm.csbrg.com';
+const HRM_BASE_URL = 'http://50.50.50.4';
 const HRM_SSO_URL = `${HRM_BASE_URL}/accounts/go-to-csb/`;
 
 function SSOHandler({ onLogin }) {

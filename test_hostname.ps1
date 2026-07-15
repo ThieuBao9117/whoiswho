@@ -1,14 +1,14 @@
-Write-Host "=== Test voi hostname dung: hrm.csbrg.com ===" -ForegroundColor Cyan
+Write-Host "=== Test voi hostname dung: 50.50.50.4 ===" -ForegroundColor Cyan
 # Them tam vao hosts file de test
-$hostsEntry = "127.0.0.1 hrm.csbrg.com"
+$hostsEntry = "127.0.0.1 50.50.50.4"
 $hostsFile = "C:\Windows\System32\drivers\etc\hosts"
 $currentHosts = Get-Content $hostsFile
 if ($currentHosts -notcontains $hostsEntry) {
-    Write-Host "  Hosts file chua co hrm.csbrg.com -> them vao..."
+    Write-Host "  Hosts file chua co 50.50.50.4 -> them vao..."
     # Khong the ghi hosts file khong co quyen admin
     Write-Host "  Can quyen admin de them vao hosts file" -ForegroundColor Yellow
 } else {
-    Write-Host "  Hosts file da co hrm.csbrg.com" -ForegroundColor Green
+    Write-Host "  Hosts file da co 50.50.50.4" -ForegroundColor Green
 }
 
 Write-Host ""
@@ -19,8 +19,8 @@ Write-Host ""
 Write-Host "=== Test curl voi header Host ===" -ForegroundColor Cyan
 # Su dung WebRequest voi host header
 try {
-    $r = Invoke-WebRequest -Uri "http://127.0.0.1/game/" -UseBasicParsing -TimeoutSec 5 -Headers @{"Host"="hrm.csbrg.com"}
-    Write-Host "  hrm.csbrg.com/game/ -> $($r.StatusCode)" -ForegroundColor Green
+    $r = Invoke-WebRequest -Uri "http://127.0.0.1/game/" -UseBasicParsing -TimeoutSec 5 -Headers @{"Host"="50.50.50.4"}
+    Write-Host "  50.50.50.4/game/ -> $($r.StatusCode)" -ForegroundColor Green
     Write-Host "  Preview: $($r.Content.Substring(0, 200))"
 } catch {
     $ex = $_.Exception
@@ -39,7 +39,7 @@ try {
 Write-Host ""
 Write-Host "=== Test game/index.html voi Host header ===" -ForegroundColor Cyan
 try {
-    $r = Invoke-WebRequest -Uri "http://127.0.0.1/game/index.html" -UseBasicParsing -TimeoutSec 5 -Headers @{"Host"="hrm.csbrg.com"}
+    $r = Invoke-WebRequest -Uri "http://127.0.0.1/game/index.html" -UseBasicParsing -TimeoutSec 5 -Headers @{"Host"="50.50.50.4"}
     Write-Host "  game/index.html -> $($r.StatusCode)" -ForegroundColor Green
     Write-Host "  Preview: $($r.Content.Substring(0, 100))"
 } catch {

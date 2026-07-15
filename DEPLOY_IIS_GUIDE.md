@@ -1,9 +1,9 @@
-# HƯỚNG DẪN DEPLOY CSB Game lên hrm.csbrg.com/game
+# HƯỚNG DẪN DEPLOY CSB Game lên 50.50.50.4/game
 
 ## Kiến trúc sau khi deploy
 
 ```
-hrm.csbrg.com (IIS - Port 80)
+50.50.50.4 (IIS - Port 80)
 ├── /            → Django HRM (existing)
 ├── /game/       → CSB Frontend (React build files, served by IIS)
 ├── /game/api/   → CSB Backend (FastAPI, reverse proxy từ IIS → port 7000)
@@ -58,7 +58,7 @@ C:\inetpub\wwwroot\game\
 ### 3a. Tạo Virtual Directory hoặc Application trong IIS
 
 1. Mở **IIS Manager**
-2. Chọn site `hrm.csbrg.com`
+2. Chọn site `50.50.50.4`
 3. Click phải → **Add Application**
    - Alias: `game`
    - Physical path: `C:\inetpub\wwwroot\game\`
@@ -137,7 +137,7 @@ Thêm vào `web.config` phần `<rewrite><rules>`:
   <match url="^game/api/(.*)" />
   <action type="Rewrite" url="http://localhost:7000/api/{R:1}" />
   <serverVariables>
-    <set name="HTTP_X_FORWARDED_HOST" value="hrm.csbrg.com" />
+    <set name="HTTP_X_FORWARDED_HOST" value="50.50.50.4" />
   </serverVariables>
 </rule>
 ```
@@ -177,13 +177,13 @@ Tạo Task Scheduler chạy file này khi Windows khởi động với quyền S
 
 ## BƯỚC 6: Cập nhật CORS trong Backend
 
-Backend cần cho phép requests từ `hrm.csbrg.com`:
+Backend cần cho phép requests từ `50.50.50.4`:
 
 Mở `C:\WHO\csbwhoiswho\backend\app\main.py` và kiểm tra CORS origins, thêm:
 ```python
 origins = [
-    "http://hrm.csbrg.com",
-    "https://hrm.csbrg.com",
+    "http://50.50.50.4",
+    "https://50.50.50.4",
     "http://localhost:5173",
     "http://localhost:80",
 ]
@@ -209,7 +209,7 @@ npm.cmd run build
 
 Trong Django HRM, view `redirect_to_csb_game` cần redirect đến:
 ```python
-CSB_FRONTEND_URL = "http://hrm.csbrg.com/game"  # ← Thay localhost bằng domain thật
+CSB_FRONTEND_URL = "http://50.50.50.4/game"  # ← Thay localhost bằng domain thật
 ```
 
 ---
@@ -222,10 +222,10 @@ CSB_FRONTEND_URL = "http://hrm.csbrg.com/game"  # ← Thay localhost bằng doma
 - [ ] Cài IIS URL Rewrite + ARR
 - [ ] Thêm rule reverse proxy `/game/api → localhost:7000`  
 - [ ] Cài NSSM, tạo Windows Service cho backend FastAPI
-- [ ] Kiểm tra CORS trong backend cho phép `hrm.csbrg.com`
+- [ ] Kiểm tra CORS trong backend cho phép `50.50.50.4`
 - [ ] Tạo `.env.production` cho frontend với `VITE_API_URL=/game/api`
 - [ ] Build lại frontend và copy lại dist
-- [ ] Trong Django: cập nhật `CSB_FRONTEND_URL = "http://hrm.csbrg.com/game"`
-- [ ] Test: `http://hrm.csbrg.com/game` → giao diện game
-- [ ] Test: `http://hrm.csbrg.com/game/api/` → `{"message":"WHO Is WHO API is running"}`
-- [ ] Test SSO flow: Login HRM → click nút → redirect `hrm.csbrg.com/game/sso?token=...`
+- [ ] Trong Django: cập nhật `CSB_FRONTEND_URL = "http://50.50.50.4/game"`
+- [ ] Test: `http://50.50.50.4/game` → giao diện game
+- [ ] Test: `http://50.50.50.4/game/api/` → `{"message":"WHO Is WHO API is running"}`
+- [ ] Test SSO flow: Login HRM → click nút → redirect `50.50.50.4/game/sso?token=...`

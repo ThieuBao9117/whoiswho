@@ -219,7 +219,7 @@ def get_leaderboard_data(
             "days_to_complete": days,
             "raw_seconds": completion_time_seconds,
             "win_date": win_time.strftime("%d/%m/%Y"),
-            "avatar": (f"http://hrm.csbrg.com{emp.photo}" if emp.photo and emp.photo.startswith('/') else emp.photo) or f"https://ui-avatars.com/api/?name={emp.full_name or emp.emp_code}&background=random&color=fff&size=200&bold=true",
+            "avatar": (f"http://50.50.50.4{emp.photo}" if emp.photo and emp.photo.startswith('/') else emp.photo) or f"https://ui-avatars.com/api/?name={emp.full_name or emp.emp_code}&background=random&color=fff&size=200&bold=true",
         })
 
     # Sort by fastest completion time
@@ -348,7 +348,7 @@ def get_live_ranking_data(
             "has_won": has_won,
             "is_expired": is_expired,
             "win_date": win_date,
-            "avatar": (f"http://hrm.csbrg.com{emp.photo}" if emp.photo and emp.photo.startswith('/') else emp.photo) or f"https://ui-avatars.com/api/?name={emp.full_name or emp.emp_code}&background=random&color=fff&size=200&bold=true",
+            "avatar": (f"http://50.50.50.4{emp.photo}" if emp.photo and emp.photo.startswith('/') else emp.photo) or f"https://ui-avatars.com/api/?name={emp.full_name or emp.emp_code}&background=random&color=fff&size=200&bold=true",
         })
 
     winners.sort(key=lambda x: x["raw_count"], reverse=True)

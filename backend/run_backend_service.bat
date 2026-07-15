@@ -13,9 +13,9 @@ if errorlevel 1 (
 )
 
 :START
-cd /d C:\WHO\csbwhoiswho\backend
+cd /d C:\code\whoiswho\backend
 echo [%DATE% %TIME%] Starting uvicorn...
-C:\WHO\csbwhoiswho\backend\venv\Scripts\python.exe -m uvicorn app.main:app ^
+C:\code\whoiswho\backend\venv\Scripts\python.exe -m uvicorn app.main:app ^
     --host 127.0.0.1 ^
     --port 7000 ^
     --loop asyncio ^

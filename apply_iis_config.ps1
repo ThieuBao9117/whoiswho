@@ -14,6 +14,7 @@ Write-Host "=== CSB Game - Apply IIS URL Rewrite Rules ===" -ForegroundColor Cya
 if (-not $WebConfigPath) {
     # Thu cac duong dan pho bien
     $candidates = @(
+        "C:\code\HRM\HRM_WEB\web.config",
         "D:\WHO\web.config",
         "C:\inetpub\wwwroot\web.config",
         "C:\inetpub\wwwroot\hrm\web.config",
@@ -79,9 +80,11 @@ $newRulesXml = @"
   <rule name="CSB API Reverse Proxy" stopProcessing="true">
     <match url="^game/api/(.*)" />
     <action type="Rewrite" url="http://localhost:7000/api/{R:1}" appendQueryString="true" />
+    <!--
     <serverVariables>
-      <set name="HTTP_X_FORWARDED_HOST" value="hrm.csbrg.com" />
+      <set name="HTTP_X_FORWARDED_HOST" value="50.50.50.4" />
     </serverVariables>
+    -->
   </rule>
   <rule name="CSB Static Assets" stopProcessing="true">
     <match url="^game/assets/(.*)" />
@@ -134,5 +137,5 @@ Write-Host "Dang reset IIS de ap dung thay doi..."
 iisreset /noforce 2>&1 | Write-Host
 Write-Host ""
 Write-Host "Test:"
-Write-Host "  http://hrm.csbrg.com/game/        -> Giao dien CSB Game"
-Write-Host "  http://hrm.csbrg.com/game/api/    -> CSB API"
+Write-Host "  http://50.50.50.4/game/        -> Giao dien CSB Game"
+Write-Host "  http://50.50.50.4/game/api/    -> CSB API"

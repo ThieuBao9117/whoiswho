@@ -33,7 +33,7 @@ try {
 
 Write-Host ""
 Write-Host "=== web.config da co rules CSB? ===" -ForegroundColor Cyan
-$wc = Get-Content "C:\HRM_WEB\HRM_WEB\HRM_WEB\web.config" -Raw
+$wc = Get-Content "C:\code\HRM\HRM_WEB\web.config" -Raw
 if ($wc -match "CSB") {
     Write-Host "   OK - web.config da co rules CSB" -ForegroundColor Green
 } else {

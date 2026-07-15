@@ -38,9 +38,9 @@ function colorFromName(name = '') {
  * 
  * @param {string} photo - URL ảnh từ backend
  * @param {string} fullName - Họ tên đầy đủ
- * @param {string} hrmDomain - Domain HRM (mặc định hrm.csbrg.com)
+ * @param {string} hrmDomain - Domain HRM (mặc định 50.50.50.4)
  */
-export function getAvatarUrl(photo, fullName, hrmDomain = 'http://hrm.csbrg.com') {
+export function getAvatarUrl(photo, fullName, hrmDomain = 'http://50.50.50.4') {
   if (photo && photo.trim()) {
     // Nếu là relative URL, thêm domain HRM
     if (photo.startsWith('/')) return `${hrmDomain}${photo}`;

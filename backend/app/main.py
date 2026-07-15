@@ -25,8 +25,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         # Production
-        "http://hrm.csbrg.com",
-        "https://hrm.csbrg.com",
+        "http://50.50.50.4",
+        "https://50.50.50.4",
         # Local development
         "http://localhost:5173",
         "http://localhost:5174",

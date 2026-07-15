@@ -1,6 +1,6 @@
 import requests
 
-HRM_BASE   = "http://hrm.csbrg.com"
+HRM_BASE   = "http://50.50.50.4"
 HRM_USER   = "mi_mtri"
 HRM_PASS   = "@Dmin123#$"
 

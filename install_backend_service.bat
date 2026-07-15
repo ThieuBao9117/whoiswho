@@ -5,7 +5,7 @@ echo  Chay voi quyen Administrator tren SERVER
 echo ===================================================
 echo.
 
-set BACKEND_DIR=C:\WHO\csbwhoiswho\backend
+set BACKEND_DIR=C:\code\whoiswho\backend
 
 echo [1/3] Xoa task cu neu co...
 schtasks /delete /tn "CSBBackend" /f >nul 2>&1
@@ -16,7 +16,6 @@ schtasks /create /tn "CSBBackend" ^
     /sc ONSTART ^
     /ru SYSTEM ^
     /rl HIGHEST ^
-    /sd 01/01/2024 ^
     /f
 if errorlevel 1 (
     echo LOI: Khong tao duoc Scheduled Task - can quyen Administrator
@@ -42,5 +41,4 @@ echo.
 echo ===================================================
 echo  XONG! Backend se tu dong khoi dong cung Windows.
 echo ===================================================
-echo.
-pause
+echo Done!

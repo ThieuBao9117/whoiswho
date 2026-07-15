@@ -20,7 +20,7 @@ url = f"http://127.0.0.1/game/api/auth/sso-login?token={token}"
 print(f"Calling: {url}")
 
 try:
-    r = requests.post(url, headers={'Host': 'hrm.csbrg.com'})
+    r = requests.post(url, headers={'Host': '50.50.50.4'})
     print(f"Status: {r.status_code}")
     print(f"Body: {r.text[:500]}")
 except Exception as e:

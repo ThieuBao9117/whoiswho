@@ -40,14 +40,14 @@ except Exception as e:
 
 # === 4. Kiem tra CSB_SSO_URL trong HRM ===
 print(f"\n[4] CSB_SSO_URL se redirect den:")
-print(f"    http://hrm.csbrg.com/game/sso?token=...")
+print(f"    http://50.50.50.4/game/sso?token=...")
 print(f"    Frontend sso-login API URL: /game/api/auth/sso-login?token=...")
 print(f"\n[5] Kiem tra API proxy /game/api/* -> localhost:7000:")
 try:
     r = requests.get(
         "http://localhost:7000/",
         timeout=5,
-        headers={"Host": "hrm.csbrg.com"}
+        headers={"Host": "50.50.50.4"}
     )
     print(f"    CSB Backend: {r.status_code} - {r.text[:100]}")
 except Exception as e:
