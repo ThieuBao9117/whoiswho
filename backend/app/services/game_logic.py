@@ -15,14 +15,15 @@ def get_target_for_employee(db: Session, emp: CSBEmployeeRef) -> int:
     """
     Get the required connection target for an employee based on fixed rules:
     - Operator / Công nhân: 10
-    - Team Leader / Trưởng ca: 20
-    - Officer / Others: 30
+    - Team Leader / Trưởng ca: 20  (KHÔNG bao gồm Part Leader)
+    - Officer / Others (bao gồm Part Leader): 30
     """
     role = (emp.role or "").lower()
 
     if "operator" in role or "công nhân" in role:
         return 10
-    if "leader" in role or "trưởng ca" in role:
+    # Chỉ team leader và trưởng ca mới là 20, KHÔNG phải part leader
+    if "team leader" in role or "trưởng ca" in role:
         return 20
 
     return 30
@@ -162,9 +163,10 @@ def get_leaderboard_data(
         is_operator = "operator" in role or "công nhân" in role
 
         # Calculate target_count inline
+        # Chỉ team leader và trưởng ca mới là 20, KHÔNG phải part leader
         if is_operator:
             target_count = 10
-        elif "leader" in role or "trưởng ca" in role:
+        elif "team leader" in role or "trưởng ca" in role:
             target_count = 20
         else:
             target_count = 30
@@ -290,7 +292,8 @@ def get_live_ranking_data(
         role = (emp.role or "").lower()
         is_operator = "operator" in role or "công nhân" in role
 
-        target_count = 10 if is_operator else (20 if "leader" in role or "trưởng ca" in role else 30)
+        # Chỉ team leader và trưởng ca mới là 20, KHÔNG phải part leader
+        target_count = 10 if is_operator else (20 if "team leader" in role or "trưởng ca" in role else 30)
 
         conns = connections_by_user.get(emp.id, [])
 

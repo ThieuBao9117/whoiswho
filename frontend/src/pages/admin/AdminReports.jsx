@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import api from '../../services/api';
 
 export default function AdminReports() {
-  const [selectedMonth, setSelectedMonth] = useState("2026-03");
+  const [selectedMonth, setSelectedMonth] = useState("2026-07");
   const [stats, setStats] = useState({ total_employees: 0, completed_kpi: 0, projected_reward: 0, total_connections: 0 });
   const [report, setReport] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -69,7 +69,8 @@ export default function AdminReports() {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `Chi_Tiet_Nguoi_Thang_Cuoc_${selectedMonth}.xlsx`);
+      const [mm, yy] = selectedMonth.split('-');
+      link.setAttribute('download', `Bao_cao_KPI_T${mm}_${yy}.xlsx`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
