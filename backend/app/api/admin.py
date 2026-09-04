@@ -243,6 +243,10 @@ def export_report_excel(period: str, db: Session = Depends(get_db)):
 
     def get_role_info(emp):
         role = (emp.role or "").lower()
+        username = (emp.username or "").upper()
+        # Driver (lái xe) chỉ cần 10 kết nối trong 30 ngày, giống Operator
+        if username.startswith("DRV_") or "driver" in role:
+            return 10, 30, "Driver"
         if "operator" in role or "công nhân" in role or "cong nhan" in role:
             return 10, 30, "Operator"
         if "team leader" in role or "trưởng ca" in role:

@@ -15,11 +15,16 @@ def get_target_for_employee(db: Session, emp: CSBEmployeeRef) -> int:
     """
     Get the required connection target for an employee based on fixed rules:
     - Operator / Công nhân: 10
+    - Driver (username bắt đầu DRV_): 10
     - Team Leader / Trưởng ca: 20  (KHÔNG bao gồm Part Leader)
     - Officer / Others (bao gồm Part Leader): 30
     """
     role = (emp.role or "").lower()
+    username = (emp.username or "").upper()
 
+    # Driver (lái xe) chỉ cần 10 kết nối
+    if username.startswith("DRV_") or "driver" in role:
+        return 10
     if "operator" in role or "công nhân" in role:
         return 10
     # Chỉ team leader và trưởng ca mới là 20, KHÔNG phải part leader
@@ -47,9 +52,12 @@ def calculate_user_game_state(db: Session, emp: CSBEmployeeRef) -> Dict[str, Any
 
     # 1. Calculate duration based on role
     role = (emp.role or "").lower()
+    username = (emp.username or "").upper()
     is_operator = "operator" in role or "công nhân" in role
+    is_driver = username.startswith("DRV_") or "driver" in role
 
-    duration_days = 30 if is_operator else 60
+    # Driver (lái xe) được tính như Operator: 30 ngày, 10 kết nối
+    duration_days = 30 if (is_operator or is_driver) else 60
     deadline = join_date + timedelta(days=duration_days)
 
     now = datetime.now(timezone.utc)
@@ -160,11 +168,14 @@ def get_leaderboard_data(
             continue
 
         role = (emp.role or "").lower()
+        username = (emp.username or "").upper()
         is_operator = "operator" in role or "công nhân" in role
+        is_driver = username.startswith("DRV_") or "driver" in role
 
         # Calculate target_count inline
+        # Driver (lái xe) và Operator chỉ cần 10 kết nối
         # Chỉ team leader và trưởng ca mới là 20, KHÔNG phải part leader
-        if is_operator:
+        if is_driver or is_operator:
             target_count = 10
         elif "team leader" in role or "trưởng ca" in role:
             target_count = 20
@@ -183,7 +194,7 @@ def get_leaderboard_data(
         # Normalize to timezone-aware if naive
         if join_date.tzinfo is None:
             join_date = join_date.replace(tzinfo=timezone.utc)
-        duration_days = 30 if is_operator else 60
+        duration_days = 30 if (is_operator or is_driver) else 60
         deadline = join_date + timedelta(days=duration_days)
 
         winning_connection = conns[target_count - 1]
@@ -290,15 +301,24 @@ def get_live_ranking_data(
             continue
 
         role = (emp.role or "").lower()
+        username = (emp.username or "").upper()
         is_operator = "operator" in role or "công nhân" in role
+        is_driver = username.startswith("DRV_") or "driver" in role
 
+        # Driver (lái xe) và Operator chỉ cần 10 kết nối
         # Chỉ team leader và trưởng ca mới là 20, KHÔNG phải part leader
-        target_count = 10 if is_operator else (20 if "team leader" in role or "trưởng ca" in role else 30)
+        if is_driver or is_operator:
+            target_count = 10
+        elif "team leader" in role or "trưởng ca" in role:
+            target_count = 20
+        else:
+            target_count = 30
 
         conns = connections_by_user.get(emp.id, [])
 
         # Filter connections that are valid (responded before their personal deadline)
-        duration_days = 30 if is_operator else 60
+        # Driver được tính như Operator (30 ngày)
+        duration_days = 30 if (is_operator or is_driver) else 60
         deadline = emp_join + timedelta(days=duration_days)
         is_expired = now > deadline
 
