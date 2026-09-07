@@ -24,6 +24,25 @@ router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login")
 
 
+def is_admin_user(user: CSBEmployeeRef) -> bool:
+    """Return whether a synced WHO employee may access admin screens."""
+    username = (user.username or "").strip().lower()
+    department = (user.department or "").strip().casefold()
+    role = (user.role or "").strip().casefold()
+    status_value = (user.status or "").strip().casefold()
+
+    # Keep the existing development/admin account behavior.
+    if "admin" in username:
+        return True
+
+    return (
+        bool(user.is_active)
+        and status_value == "active"
+        and role != "driver"
+        and department in {"hr", "hr & ehs"}
+    )
+
+
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     """
     Validate JWT token and return CSB employee.
@@ -158,7 +177,7 @@ def read_users_me(current_user: CSBEmployeeRef = Depends(get_current_user), db: 
     
     return {
         "username": current_user.username,
-        "is_staff": "admin" in current_user.username.lower(),
+        "is_staff": is_admin_user(current_user),
         "game_state": game_state,
         "employee_profile": {
             "id": str(current_user.id) if hasattr(current_user, 'id') else current_user.emp_code,

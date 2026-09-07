@@ -110,7 +110,7 @@ function AvatarBubble({ user, color, size = 110, isCenter = false, rank = 0 }) {
         </div>
       )}
 
-      {/* Circle avatar - overflow:hidden for circular crop */}
+      {/* Circle avatar - fill the frame while preserving the photo aspect ratio */}
       <div style={{
         width: size,
         height: size,
@@ -119,7 +119,7 @@ function AvatarBubble({ user, color, size = 110, isCenter = false, rank = 0 }) {
         border: `4px solid ${color.ring}`,
         boxShadow: `0 0 ${isCenter ? 40 : 20}px ${color.shadow}, 0 4px 20px rgba(0,0,0,0.3)`,
         animation: isCenter ? 'center-pulse 2.5s ease-in-out infinite' : `float-${rank % 3} ${2.5 + rank * 0.3}s ease-in-out infinite`,
-        background: color.bg,
+         background: '#f1f5f9',
         flexShrink: 0,
       }}>
         <img
@@ -128,8 +128,8 @@ function AvatarBubble({ user, color, size = 110, isCenter = false, rank = 0 }) {
           style={{
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center top',
+             objectFit: 'cover',
+             objectPosition: 'center',
             display: 'block',
           }}
           onError={e => {
